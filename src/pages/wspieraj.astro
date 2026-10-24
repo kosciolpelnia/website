@@ -1,0 +1,144 @@
+---
+import QRCode from 'qrcode';
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import CopyButton from '../components/CopyButton.astro';
+import Brak from '../components/Brak.astro';
+import { site } from '../data/site';
+import { digitsOnly, formatAccount, transferQrPayload } from '../lib/transfer';
+
+const g = site.giving;
+const account = formatAccount(g.account);
+
+const purposes = await Promise.all(
+  g.purposes.map(async (p, i) => ({
+    ...p,
+    id: `cel-${i}`,
+    qr: await QRCode.toString(
+      transferQrPayload({ nip: site.nip ?? undefined, account: g.account, recipient: g.recipient, title: p.title }),
+      { type: 'svg', margin: 0, errorCorrectionLevel: 'M', color: { dark: '#2d231b', light: '#00000000' } },
+    ),
+  })),
+);
+---
+
+<Base title="Wspieraj" description="Jak wesprzeć Kościół Pełnia w Wieliczce: przelew, kod QR do aplikacji banku albo płatność online.">
+  <PageHero
+    eyebrow="Wspieraj"
+    title="Hojność, która zmienia miasto"
+    lead="Jesteśmy wdzięczni za Twoją hojność, dzięki której Kościół Pełnia może jeszcze lepiej działać w naszym mieście i docierać do jeszcze większej liczby osób."
+  />
+
+  <section class="kontener pb-10">
+    <div class="proza">
+      <p>
+        Kościół utrzymuje się wyłącznie z dobrowolnych darowizn ludzi, którzy uważają go za swój dom. Z nich opłacamy
+        wynajem sali, sprzęt, materiały dla dzieci i wszystko, co robimy dla Wieliczki. Dziesięcina, czyli dziesiąta
+        część dochodu, to biblijna zasada, którą traktujemy jako wyraz zaufania Bogu, a nie przymus.
+      </p>
+    </div>
+  </section>
+
+  <section class="kontener grid gap-4 py-10 lg:grid-cols-[1.4fr_1fr]" aria-labelledby="przelew">
+    <div class="rounded-(--radius-duzy) bg-zielen p-8 text-bez md:p-12">
+      <h2 id="przelew" class="font-naglowek text-2xl">Przelew</h2>
+      <dl class="mt-8 space-y-7">
+        <div>
+          <dt class="text-sm font-semibold tracking-wide text-bursztyn uppercase">Odbiorca</dt>
+          <dd class="mt-1 text-xl font-semibold">{g.recipient}</dd>
+        </div>
+        <div>
+          <dt class="text-sm font-semibold tracking-wide text-bursztyn uppercase">Numer konta</dt>
+          <dd class="mt-2 flex flex-wrap items-center gap-4">
+            <span class="font-mono text-[clamp(1.05rem,3.6vw,1.6rem)] font-semibold tracking-tight tabular-nums">{account}</span>
+            <CopyButton value={digitsOnly(g.account)} label="Kopiuj numer" />
+          </dd>
+        </div>
+        <div>
+          <dt class="text-sm font-semibold tracking-wide text-bursztyn uppercase">Tytuł przelewu</dt>
+          <dd class="mt-3">
+            <ul class="space-y-3">
+              {
+                g.purposes.map((p) => (
+                  <li class="flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-bez/10 px-4 py-3">
+                    <span>
+                      <span class="block text-sm text-bez/70">{p.name}</span>
+                      <span class="font-medium">{p.title}</span>
+                    </span>
+                    <CopyButton value={p.title} label="Kopiuj" />
+                  </li>
+                ))
+              }
+            </ul>
+          </dd>
+        </div>
+      </dl>
+    </div>
+
+    <div class="rounded-(--radius-duzy) bg-bursztyn p-8 text-braz md:p-12">
+      <h2 class="font-naglowek text-2xl">Kod QR</h2>
+      <p class="mt-3 leading-relaxed">Zeskanuj w aplikacji banku: numer konta, odbiorca i tytuł wpiszą się same, a Ty podasz tylko kwotę.</p>
+      <div class="mt-6" role="radiogroup" aria-label="Cel darowizny">
+        {
+          purposes.map((p, i) => (
+            <label class="mr-2 mb-2 inline-flex cursor-pointer items-center rounded-full px-4 py-2 text-sm font-semibold ring-2 ring-braz ring-inset has-checked:bg-braz has-checked:text-bez">
+              <input type="radio" name="cel" value={p.id} checked={i === 0} class="sr-only" />
+              {p.name}
+            </label>
+          ))
+        }
+      </div>
+      <div class="qr mt-4 rounded-3xl bg-bez p-6">
+        {purposes.map((p, i) => <div data-qr={p.id} hidden={i !== 0} class="mx-auto aspect-square max-w-64" set:html={p.qr} aria-label={`Kod QR: ${p.title}`} role="img" />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="kontener py-10" aria-labelledby="online">
+    <div class="flex flex-col gap-8 rounded-(--radius-duzy) bg-pomarancz p-8 text-braz md:flex-row md:items-center md:justify-between md:p-12">
+      <div>
+        <h2 id="online" class="font-naglowek text-2xl">Wesprzyj online</h2>
+        <p class="mt-3 max-w-xl leading-relaxed">Kartą lub portfelem w telefonie, przez bezpieczną stronę płatności Stripe.</p>
+      </div>
+      <a href={g.stripeUrl} rel="noopener" class="shrink-0 self-start rounded-full bg-braz px-8 py-4 text-lg font-semibold text-bez transition hover:bg-zielen md:self-center">
+        Wspieram online
+      </a>
+    </div>
+  </section>
+
+  <section class="kontener py-10" aria-labelledby="pit">
+    <div class="proza">
+      <h2 id="pit">Odliczenie od podatku</h2>
+      <p>
+        Darowiznę na cele kultu religijnego możesz odliczyć w rocznym zeznaniu PIT, do wysokości 6% dochodu. Wystarczy
+        potwierdzenie przelewu na rachunek kościoła z Twoimi danymi, danymi kościoła, kwotą i tytułem. Dlatego prosimy o
+        tytuł zaczynający się od słów „{g.baseTitle}”. Darowizn wpłaconych gotówką nie da się odliczyć.
+      </p>
+      <h3>Dane kościoła</h3>
+      <p>
+        {site.legalName}<br />
+        NIP: {site.nip ?? <Brak co="NIP zboru" />}
+      </p>
+      <p class="text-sm opacity-75">
+        To nie jest porada podatkowa. Szczegóły: art. 26 ust. 1 pkt 9 lit. b ustawy o podatku dochodowym od osób
+        fizycznych.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<script>
+  // Show the QR code of the chosen purpose.
+  document.querySelectorAll<HTMLInputElement>('input[name="cel"]').forEach((input) =>
+    input.addEventListener('change', () => {
+      document.querySelectorAll<HTMLElement>('[data-qr]').forEach((qr) => (qr.hidden = qr.dataset.qr !== input.value));
+    }),
+  );
+</script>
+
+<style>
+  [data-qr] :global(svg) {
+    width: 100%;
+    height: auto;
+  }
+</style>

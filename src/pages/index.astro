@@ -1,0 +1,121 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+
+const s = site.sunday;
+
+const tiles = [
+  {
+    href: '/kim-jestesmy',
+    title: 'Kim jesteśmy',
+    text: 'Nasza misja, pastorzy i historia zboru, który dopiero się zaczyna.',
+    tone: 'bg-bursztyn text-braz',
+  },
+  {
+    href: '/w-co-wierzymy',
+    title: 'W co wierzymy',
+    text: 'Protestanci, zielonoświątkowcy, chrześcijanie. Co to znaczy w praktyce.',
+    tone: 'bg-bez-jasny text-zielen ring-1 ring-zielen/15',
+  },
+  {
+    href: '/uwielbienie',
+    title: 'Uwielbienie',
+    text: 'Polskie tłumaczenia pieśni uwielbienia. Teksty za darmo dla każdego kościoła.',
+    tone: 'bg-braz text-bez',
+  },
+  {
+    href: '/wspieraj',
+    title: 'Wspieraj',
+    text: 'Jak możesz finansowo wesprzeć to, co Bóg robi przez nasz kościół w Wieliczce.',
+    tone: 'bg-pomarancz text-braz',
+  },
+];
+---
+
+<Base>
+  <section class="kontener grid items-center gap-10 pt-10 pb-16 md:grid-cols-[1.15fr_1fr] md:pt-20 md:pb-24">
+    <div>
+      <p class="mb-5 font-semibold tracking-wide text-pomarancz uppercase">Kościół zielonoświątkowy w Wieliczce</p>
+      <h1 class="font-akcent text-[clamp(3rem,10vw,6.5rem)] text-balance">
+        Sól ziemi w&nbsp;mieście soli
+      </h1>
+      <p class="mt-7 max-w-xl text-lg leading-relaxed text-pretty md:text-xl">{site.mission}</p>
+      <div class="mt-9 flex flex-wrap gap-3">
+        <a href="/niedziela" class="rounded-full bg-zielen px-7 py-4 font-semibold text-bez transition hover:bg-braz">
+          Przyjdź w niedzielę
+        </a>
+        <a href="/kim-jestesmy" class="rounded-full px-7 py-4 font-semibold ring-2 ring-zielen ring-inset transition hover:bg-zielen/10">
+          Poznaj nas
+        </a>
+      </div>
+    </div>
+
+    <figure class="relative overflow-hidden rounded-(--radius-duzy) bg-zielen p-8 text-bez md:p-12">
+      <div aria-hidden="true" class="absolute top-0 bottom-0 left-[38%] w-[3px] rounded-full bg-bez/20"></div>
+      <div aria-hidden="true" class="absolute top-[58%] right-0 left-[18%] h-[3px] rounded-full bg-bez/20"></div>
+      <blockquote class="relative">
+        <p class="font-akcent text-[clamp(2.25rem,6vw,4rem)] text-bez">„Wy jesteście solą ziemi”</p>
+      </blockquote>
+      <figcaption class="relative mt-24 text-right font-semibold tracking-wide text-bursztyn uppercase md:mt-36">
+        {site.verse.ref}
+      </figcaption>
+    </figure>
+  </section>
+
+  <section aria-labelledby="niedziela" class="px-2 sm:px-4">
+    <div class="mx-auto max-w-[80rem] rounded-(--radius-duzy) bg-pomarancz text-braz">
+      <div class="kontener grid gap-10 py-14 md:grid-cols-[auto_1fr] md:items-center md:gap-16 md:py-20">
+        <div>
+          <h2 id="niedziela" class="font-naglowek text-lg">Dołącz w niedzielę</h2>
+          <p class="font-akcent mt-3 text-[clamp(5rem,18vw,9rem)] text-bez">{s.start}</p>
+        </div>
+        <div class="space-y-5 text-lg">
+          <p class="text-xl leading-relaxed font-medium text-pretty md:text-2xl">
+            Wspólnie uwielbiamy Boga, słuchamy Słowa Bożego, a dzieci mają w tym czasie swój kościół dziecięcy.
+            Przyjdź kwadrans wcześniej na kawę.
+          </p>
+          <p class="font-semibold">
+            {s.venueName && <>{s.venueName}, </>}ul. {s.street}, {s.city}
+          </p>
+          <div class="flex flex-wrap gap-3 pt-2">
+            <a href="/niedziela" class="rounded-full bg-braz px-6 py-3.5 font-semibold text-bez transition hover:bg-zielen">
+              Jak wygląda niedziela
+            </a>
+            <a
+              href={s.mapsUrl}
+              target="_blank"
+              rel="noopener"
+              class="rounded-full px-6 py-3.5 font-semibold ring-2 ring-braz ring-inset transition hover:bg-braz/10"
+            >
+              Dojazd
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="kontener py-20 md:py-28" aria-label="Poznaj nas bliżej">
+    <ul class="grid gap-4 sm:grid-cols-2">
+      {
+        tiles.map((t) => (
+          <li>
+            <a
+              href={t.href}
+              class:list={[
+                'group flex h-full min-h-56 flex-col justify-between rounded-(--radius-karta) p-7 transition hover:-translate-y-1 md:p-9',
+                t.tone,
+              ]}
+            >
+              <h2 class="font-naglowek text-2xl md:text-3xl">{t.title}</h2>
+              <p class="mt-8 flex items-end justify-between gap-6 text-pretty">
+                <span class="max-w-sm leading-relaxed">{t.text}</span>
+                <span aria-hidden="true" class="text-3xl transition group-hover:translate-x-1">→</span>
+              </p>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</Base>

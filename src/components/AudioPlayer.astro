@@ -1,0 +1,46 @@
+---
+interface Props {
+  src: string;
+  title: string;
+}
+const { src, title } = Astro.props;
+---
+
+<div class="flex items-center gap-4 rounded-full bg-zielen p-2 pr-6 text-bez" data-player>
+  <audio src={src} preload="metadata"></audio>
+  <button
+    type="button"
+    data-toggle
+    aria-label={`Odtwórz demo: ${title}`}
+    class="grid size-12 shrink-0 cursor-pointer place-items-center rounded-full bg-bursztyn text-braz"
+  >
+    <svg data-icon-play viewBox="0 0 24 24" class="size-5 translate-x-px" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"></path></svg>
+    <svg data-icon-pause viewBox="0 0 24 24" class="hidden size-5" fill="currentColor" aria-hidden="true"><path d="M6 4h4v16H6zM14 4h4v16h-4z"></path></svg>
+  </button>
+  <input type="range" min="0" max="1000" value="0" data-seek aria-label="Pozycja nagrania" class="min-w-0 flex-1 accent-bursztyn" />
+  <span data-time class="w-24 shrink-0 text-right text-sm tabular-nums">0:00</span>
+</div>
+
+<script>
+  const fmt = (s: number) => (isFinite(s) ? `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}` : '0:00');
+  document.querySelectorAll<HTMLElement>('[data-player]').forEach((root) => {
+    const audio = root.querySelector('audio')!;
+    const toggle = root.querySelector<HTMLButtonElement>('[data-toggle]')!;
+    const seek = root.querySelector<HTMLInputElement>('[data-seek]')!;
+    const time = root.querySelector<HTMLElement>('[data-time]')!;
+    const render = () => {
+      root.querySelector('[data-icon-play]')!.classList.toggle('hidden', !audio.paused);
+      root.querySelector('[data-icon-pause]')!.classList.toggle('hidden', audio.paused);
+      toggle.setAttribute('aria-label', toggle.getAttribute('aria-label')!.replace(/^\S+/, audio.paused ? 'Odtwórz' : 'Zatrzymaj'));
+    };
+    toggle.addEventListener('click', () => (audio.paused ? audio.play() : audio.pause()));
+    audio.addEventListener('play', render);
+    audio.addEventListener('pause', render);
+    audio.addEventListener('timeupdate', () => {
+      if (audio.duration) seek.value = String((audio.currentTime / audio.duration) * 1000);
+      time.textContent = `${fmt(audio.currentTime)} / ${fmt(audio.duration)}`;
+    });
+    audio.addEventListener('loadedmetadata', () => (time.textContent = `0:00 / ${fmt(audio.duration)}`));
+    seek.addEventListener('input', () => audio.duration && (audio.currentTime = (Number(seek.value) / 1000) * audio.duration));
+  });
+</script>

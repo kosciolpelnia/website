@@ -1,0 +1,13 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+---
+
+<Base title="Nie ma takiej strony">
+  <PageHero eyebrow="Błąd 404" title="Tej strony tu nie ma" lead="Być może adres się zmienił. Zacznij od strony głównej albo sprawdź, kiedy jest najbliższe nabożeństwo.">
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a href="/" class="rounded-full bg-zielen px-6 py-3.5 font-semibold text-bez">Strona główna</a>
+      <a href="/niedziela" class="rounded-full px-6 py-3.5 font-semibold ring-2 ring-zielen ring-inset">Niedziela</a>
+    </div>
+  </PageHero>
+</Base>

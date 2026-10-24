@@ -1,0 +1,159 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+
+// Our own wording of the eight points of the KZ confession (https://kz.pl/wyznanie-wiary/),
+// with references taken from the KZ commentary.
+const creed = [
+  {
+    title: 'Biblia',
+    text: 'Pismo Święte jest natchnionym Słowem Bożym. To ono, a nie tradycja czy ludzkie autorytety, jest dla nas miarą wiary i życia.',
+    refs: '2 Tm 3,15-17; 2 P 1,19-21',
+  },
+  {
+    title: 'Bóg w Trójcy',
+    text: 'Jest jeden Bóg, Stwórca wszystkiego, który objawia się jako Ojciec, Syn i Duch Święty.',
+    refs: 'Pwt 6,4; Mt 28,19; 2 Kor 13,13',
+  },
+  {
+    title: 'Jezus Chrystus',
+    text: 'Jezus jest Synem Bożym, który stał się człowiekiem. Umarł na krzyżu za nasze grzechy, zmartwychwstał w ciele, wstąpił do nieba i powróci. Jest jedynym pośrednikiem między Bogiem a ludźmi.',
+    refs: 'J 1,14; Flp 2,5-11; 1 Tm 2,5',
+  },
+  {
+    title: 'Zbawienie z łaski',
+    text: 'Nie zasłużymy na Boże przebaczenie dobrymi uczynkami. Otrzymujemy je za darmo, gdy odwracamy się od grzechu i ufamy Jezusowi. Dobre uczynki są owocem tej nowej relacji, a nie jej ceną.',
+    refs: 'Rz 3,23-24; Ef 2,8-10',
+  },
+  {
+    title: 'Duch Święty i Jego dary',
+    text: 'Duch Święty mieszka w każdym wierzącym. Wierzymy w chrzest Duchem Świętym, który daje moc do życia i służby, oraz w dary Ducha, także mówienie językami i proroctwo.',
+    refs: 'Dz 1,8; Dz 2,4; 1 Kor 12',
+  },
+  {
+    title: 'Kościół',
+    text: 'Kościół to wszyscy, którzy narodzili się na nowo, a jego Głową jest Chrystus. Lokalny zbór to rodzina, w której razem wzrastamy, służymy i świadczymy o Jezusie.',
+    refs: 'Mt 16,18; Ef 4,1-16; Kol 1,18',
+  },
+  {
+    title: 'Uzdrowienie',
+    text: 'Bóg uzdrawia także dziś. Modlimy się o chorych z wiarą, a jednocześnie z wdzięcznością korzystamy z pomocy lekarzy.',
+    refs: 'Jk 5,13-16; Mk 16,17-18',
+  },
+  {
+    title: 'Powrót Jezusa i życie wieczne',
+    text: 'Jezus powróci, aby sądzić świat. Czeka nas zmartwychwstanie i życie wieczne z Bogiem w nowym niebie i na nowej ziemi.',
+    refs: '1 Tes 4,13-18; 1 Kor 15; Ap 21',
+  },
+];
+---
+
+<Base
+  title="W co wierzymy"
+  description="Jesteśmy kościołem protestanckim, zielonoświątkowym. Wierzymy w Biblię, zbawienie z łaski przez wiarę w Jezusa i moc Ducha Świętego dziś."
+>
+  <PageHero
+    eyebrow="W co wierzymy"
+    title="Chrześcijanie. Protestanci. Zielonoświątkowcy."
+    lead="Wierzymy w to samo, co chrześcijanie od dwóch tysięcy lat wyznają w Składzie Apostolskim. Poniżej wyjaśniamy, co znaczy dla nas każde z tych trzech słów."
+  />
+
+  <section class="kontener grid gap-4 pb-16 md:grid-cols-3">
+    <div class="rounded-(--radius-karta) bg-zielen p-8 text-bez">
+      <h2 class="font-naglowek text-xl text-bursztyn">Chrześcijanie</h2>
+      <p class="mt-4 leading-relaxed text-pretty">
+        W centrum naszej wiary jest Jezus Chrystus: Jego życie, śmierć i zmartwychwstanie. Z całym Kościołem wyznajemy
+        Skład Apostolski i Credo nicejsko-konstantynopolitańskie.
+      </p>
+    </div>
+    <div class="rounded-(--radius-karta) bg-bursztyn p-8 text-braz">
+      <h2 class="font-naglowek text-xl">Protestanci</h2>
+      <p class="mt-4 leading-relaxed text-pretty">
+        Wyrastamy z reformacji XVI wieku. Najwyższym autorytetem jest dla nas Biblia, a zbawienie przyjmujemy z łaski,
+        przez wiarę w Chrystusa, a nie dzięki własnym zasługom.
+      </p>
+    </div>
+    <div class="rounded-(--radius-karta) bg-pomarancz p-8 text-braz">
+      <h2 class="font-naglowek text-xl">Zielonoświątkowcy</h2>
+      <p class="mt-4 leading-relaxed text-pretty">
+        Nazwa pochodzi od Zielonych Świąt, czyli Pięćdziesiątnicy z Dziejów Apostolskich 2. Wierzymy, że Duch Święty
+        działa dziś z tą samą mocą: zmienia ludzi, uzdrawia i obdarza duchowymi darami.
+      </p>
+    </div>
+  </section>
+
+  <section class="kontener py-16" aria-labelledby="wyznanie">
+    <h2 id="wyznanie" class="font-naglowek text-3xl md:text-4xl">Nasze wyznanie wiary</h2>
+    <p class="mt-4 max-w-2xl text-lg leading-relaxed text-pretty">
+      Jako zbór Kościoła Zielonoświątkowego w RP dzielimy jego wyznanie wiary. Poniżej streszczamy je naszymi słowami.
+      Pełny, oficjalny tekst znajdziesz na
+      <a href="https://kz.pl/wyznanie-wiary/" rel="noopener" class="font-semibold underline decoration-pomarancz underline-offset-4">kz.pl</a>.
+    </p>
+    <ol class="mt-12 grid gap-4 md:grid-cols-2">
+      {
+        creed.map((item, i) => (
+          <li class="flex gap-5 rounded-(--radius-karta) bg-bez-jasny p-7 ring-1 ring-zielen/15">
+            <span class="font-akcent w-9 shrink-0 text-4xl text-pomarancz">{i + 1}</span>
+            <div>
+              <h3 class="text-xl font-bold">{item.title}</h3>
+              <p class="mt-2 leading-relaxed text-pretty">{item.text}</p>
+              <p class="mt-3 text-sm opacity-70">{item.refs}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="kontener py-16" aria-labelledby="praktyka">
+    <div class="proza">
+      <h2 id="praktyka">Jak to wygląda w praktyce</h2>
+      <h3>Chrzest w wodzie</h3>
+      <p>
+        Chrzcimy osoby, które świadomie uwierzyły w Jezusa i chcą za Nim iść, przez całkowite zanurzenie w wodzie. To
+        publiczne wyznanie wiary i znak nowego życia (Rz 6,3-4).
+      </p>
+      <h3>Wieczerza Pańska</h3>
+      <p>
+        Regularnie łamiemy chleb i pijemy z kielicha na pamiątkę śmierci Jezusa, tak jak On nam polecił (1 Kor 11,23-26).
+        Wierzymy, że Chrystus jest w niej obecny, duchowo, a nie materialnie.
+      </p>
+      <h3>Chrzest Duchem Świętym</h3>
+      <p>
+        Wierzymy, że po nawróceniu Bóg chce napełnić każdego wierzącego swoim Duchem, jak w dniu Pięćdziesiątnicy. Często
+        towarzyszy temu mówienie innymi językami. To dar, który daje odwagę i moc do życia na co dzień, a nie odznaka
+        lepszych chrześcijan.
+      </p>
+      <h3>Modlitwa i dary Ducha</h3>
+      <p>
+        Na nabożeństwach jest miejsce na modlitwę o uzdrowienie, proroctwo i inne dary opisane w 1 Liście do Koryntian
+        12-14. Dbamy o to, żeby wszystko odbywało się „godnie i w porządku” (1 Kor 14,40).
+      </p>
+    </div>
+  </section>
+
+  <section class="kontener py-16" aria-labelledby="historia">
+    <div class="proza">
+      <h2 id="historia">Skąd się wzięliśmy</h2>
+      <p>
+        Ruch zielonoświątkowy narodził się na początku XX wieku. Za jego symboliczny początek uznaje się przebudzenie przy
+        Azusa Street w Los Angeles w 1906 roku. Dziś to jeden z najszybciej rosnących nurtów chrześcijaństwa na świecie.
+      </p>
+      <p>
+        W Polsce pierwsze zbory zielonoświątkowe powstały na Śląsku Cieszyńskim około 1910 roku. Kościół Zielonoświątkowy
+        w RP w obecnej formie działa od 1987 roku. Ma ponad 200 zborów i około 24 tysięcy wiernych. Należy do
+        Aliansu Ewangelicznego w RP, Pentecostal European Fellowship oraz World Assemblies of God Fellowship.
+      </p>
+    </div>
+  </section>
+
+  <section class="kontener py-16">
+    <div class="rounded-(--radius-duzy) bg-zielen p-8 text-bez md:p-12">
+      <p class="max-w-2xl text-xl leading-relaxed text-pretty">
+        Masz pytania o wiarę? Chętnie o nich porozmawiamy przy kawie po nabożeństwie albo napisz do nas. Nie musisz
+        wszystkiego rozumieć ani się z nami zgadzać, żeby przyjść.
+      </p>
+      <a href="/niedziela" class="mt-6 inline-block rounded-full bg-bez px-6 py-3.5 font-semibold text-zielen">Przyjdź w niedzielę</a>
+    </div>
+  </section>
+</Base>

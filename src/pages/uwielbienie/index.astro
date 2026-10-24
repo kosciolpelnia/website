@@ -1,0 +1,72 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import { publicSongs } from '../../lib/catalog';
+
+const songs = await publicSongs();
+---
+
+<Base
+  title="Uwielbienie"
+  description="Polskie tłumaczenia pieśni uwielbienia od Kościoła Pełnia. Teksty, PDF i pliki do ProPresentera za darmo dla każdego kościoła."
+>
+  <PageHero
+    eyebrow="Uwielbienie"
+    title="Pieśni dla polskich kościołów"
+    lead="Tłumaczymy pieśni uwielbienia na polski i dzielimy się nimi za darmo. Pobierz tekst w PDF, posłuchaj demo albo skopiuj tekst prosto do ProPresentera."
+  />
+
+  <section class="kontener pb-16" aria-labelledby="lista">
+    <h2 id="lista" class="sr-only">Piosenki</h2>
+    {
+      songs.length === 0 ? (
+        <p class="rounded-(--radius-karta) bg-bez-jasny p-8 text-lg ring-1 ring-zielen/15">
+          Pierwsze tłumaczenia pojawią się tu wkrótce.
+        </p>
+      ) : (
+        <ul class="divide-y divide-zielen/15 border-y border-zielen/15">
+          {songs.map((song) => (
+            <li>
+              <a
+                href={`/uwielbienie/${song.slug}`}
+                class="group flex flex-col gap-1 py-6 transition sm:flex-row sm:items-center sm:justify-between sm:gap-8"
+              >
+                <span>
+                  <span class="block text-2xl font-bold group-hover:text-pomarancz">{song.title}</span>
+                  <span class="mt-1 block text-[0.95rem] opacity-80">
+                    {song.originalTitle} · {song.originalAuthors.join(', ')}
+                  </span>
+                </span>
+                <span class="flex shrink-0 flex-wrap gap-2 text-sm font-semibold">
+                  {song.demo && <span class="rounded-full bg-bursztyn px-3 py-1 text-braz">Demo</span>}
+                  <span class="rounded-full bg-zielen px-3 py-1 text-bez">PDF</span>
+                  <span class="rounded-full bg-zielen px-3 py-1 text-bez">ProPresenter</span>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </section>
+
+  <section class="kontener py-10" aria-labelledby="zasady">
+    <div class="grid gap-8 rounded-(--radius-duzy) bg-zielen p-8 text-bez md:grid-cols-2 md:p-12">
+      <div>
+        <h2 id="zasady" class="font-naglowek text-2xl text-bursztyn">Zasady korzystania</h2>
+        <p class="mt-4 leading-relaxed text-pretty">
+          Publikujemy wyłącznie tłumaczenia, do których mamy zgodę właścicieli praw. Możesz bezpłatnie używać tekstów w
+          swoim kościele: na nabożeństwach, próbach i w materiałach wewnętrznych.
+        </p>
+      </div>
+      <ul class="space-y-3 leading-relaxed">
+        <li>✓ Zostaw informację o autorach oryginału i tłumaczu.</li>
+        <li>✓ Jeśli Twój kościół ma licencję CCLI, zgłaszaj wykonania jak zwykle.</li>
+        <li>✗ Nie sprzedawaj tekstów i nie zmieniaj tłumaczenia bez kontaktu z nami.</li>
+        <li>
+          Pytania lub poprawki? Napisz: <a href="mailto:info@kosciolpelnia.pl" class="underline underline-offset-4">info@kosciolpelnia.pl</a>
+        </li>
+      </ul>
+    </div>
+  </section>
+</Base>

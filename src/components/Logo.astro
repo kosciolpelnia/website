@@ -1,0 +1,12 @@
+---
+// The full lockup only: the logobook forbids the P alone or a re-typed wordmark.
+// Colour comes from `currentColor`; use dark on light backgrounds and light on dark.
+import logo from '../assets/logo.svg?raw';
+
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<span class:list={['inline-block [&>svg]:block [&>svg]:h-full [&>svg]:w-auto', className]} set:html={logo} />

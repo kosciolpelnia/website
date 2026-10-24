@@ -1,0 +1,102 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Brak from '../components/Brak.astro';
+import Szkic from '../components/Szkic.astro';
+import { site } from '../data/site';
+
+const values = [
+  {
+    name: 'Jezus w centrum',
+    text: 'Wszystko, co robimy, zaczyna się od Jezusa i do Niego prowadzi. Nie budujemy wokół programu ani ludzi, tylko wokół Niego.',
+  },
+  {
+    name: 'Obecność i moc Ducha',
+    text: 'Wierzymy, że Duch Święty działa dziś tak samo jak w Dziejach Apostolskich. Szukamy Jego obecności w uwielbieniu, modlitwie i codzienności.',
+  },
+  {
+    name: 'Słowo, które zmienia',
+    text: 'Biblia jest dla nas fundamentem. Czytamy ją po to, żeby żyć inaczej, a nie tylko wiedzieć więcej.',
+  },
+  {
+    name: 'Rodzina, nie widownia',
+    text: 'Kościół to ludzie, którzy się znają i o siebie dbają. Każdy jest tu mile widziany taki, jaki jest.',
+  },
+  {
+    name: 'Sól dla Wieliczki',
+    text: 'Jesteśmy tu dla naszego miasta. Chcemy, żeby było lepiej dlatego, że jesteśmy jego częścią.',
+  },
+];
+---
+
+<Base title="Kim jesteśmy" description="Kościół Pełnia to młody zbór zielonoświątkowy w Wieliczce. Poznaj naszą misję, wartości i pastorów.">
+  <PageHero eyebrow="Kim jesteśmy" title="Młody kościół w starym mieście soli" lead={site.mission} />
+
+  <section class="kontener grid gap-10 pb-16 md:grid-cols-2 md:gap-16">
+    <div class="rounded-(--radius-duzy) bg-zielen p-8 text-bez md:p-12">
+      <h2 class="font-naglowek text-sm text-bursztyn">Nasza misja</h2>
+      <p class="mt-5 text-xl leading-relaxed font-medium text-pretty md:text-2xl">{site.mission}</p>
+    </div>
+    <Szkic>
+      <h2 class="font-naglowek text-sm text-pomarancz">Nasza wizja</h2>
+      <p class="mt-5 text-xl leading-relaxed font-medium text-pretty md:text-2xl">
+        Widzimy Wieliczkę, w której coraz więcej ludzi zna Jezusa osobiście, a kościół jest znany z tego, że
+        bezinteresownie służy swojemu miastu.
+      </p>
+    </Szkic>
+  </section>
+
+  <section class="kontener py-16" aria-labelledby="wartosci">
+    <h2 id="wartosci" class="font-naglowek mb-10 text-3xl md:text-4xl">Co jest dla nas ważne</h2>
+    <Szkic>
+      <ol class="grid gap-x-10 gap-y-8 md:grid-cols-2">
+        {
+          values.map((v, i) => (
+            <li class="flex gap-5">
+              <span class="font-akcent text-4xl text-pomarancz">{i + 1}</span>
+              <div>
+                <h3 class="text-lg font-bold">{v.name}</h3>
+                <p class="mt-1.5 leading-relaxed text-pretty">{v.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </Szkic>
+  </section>
+
+  <section class="kontener py-16" aria-labelledby="pastorzy">
+    <h2 id="pastorzy" class="font-naglowek mb-10 text-3xl md:text-4xl">Pastorzy</h2>
+    {
+      site.pastors.map((p) => (
+        <article class="grid gap-8 md:grid-cols-[minmax(0,22rem)_1fr] md:items-center md:gap-14">
+          {p.photo ? (
+            <img src={p.photo} alt={p.names} class="aspect-[4/5] w-full rounded-(--radius-duzy) object-cover" />
+          ) : (
+            <div class="flex aspect-[4/5] w-full items-end rounded-(--radius-duzy) bg-bursztyn p-6">
+              <Brak co="zdjęcie pastorów (oryginał, pionowe)" />
+            </div>
+          )}
+          <div>
+            <p class="font-semibold tracking-wide text-pomarancz uppercase">{p.role}</p>
+            <h3 class="font-akcent mt-2 text-5xl md:text-6xl">{p.names}</h3>
+            <p class="mt-6 max-w-xl text-lg leading-relaxed text-pretty">{p.bio}</p>
+          </div>
+        </article>
+      ))
+    }
+  </section>
+
+  <section class="kontener py-16" aria-labelledby="kz">
+    <div class="rounded-(--radius-duzy) bg-bez-jasny p-8 ring-1 ring-zielen/15 md:p-12">
+      <h2 id="kz" class="font-naglowek text-2xl md:text-3xl">Część większej rodziny</h2>
+      <p class="mt-5 max-w-2xl text-lg leading-relaxed text-pretty">
+        {site.legalName} jest częścią Kościoła Zielonoświątkowego w RP, jednego z największych kościołów
+        protestanckich w Polsce. Dzielimy z nim wyznanie wiary i strukturę, a w Wieliczce budujemy lokalną wspólnotę.
+      </p>
+      <a href="/w-co-wierzymy" class="mt-6 inline-block font-semibold underline decoration-pomarancz underline-offset-4">
+        Zobacz, w co wierzymy →
+      </a>
+    </div>
+  </section>
+</Base>

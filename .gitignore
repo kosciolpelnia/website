@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.astro/
+.vercel/
+.env
+.env.*
+!.env.tpl
+.DS_Store
+# brand sources too big for git (logobook 179 MB) - kept locally / in shared drive
+logobook.pdf
+Pełnia/do druku/

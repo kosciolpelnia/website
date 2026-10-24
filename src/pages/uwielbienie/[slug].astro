@@ -1,0 +1,144 @@
+---
+import Base from '../../layouts/Base.astro';
+import AudioPlayer from '../../components/AudioPlayer.astro';
+import { publicSongs } from '../../lib/catalog';
+import { creditLine } from '../../lib/pdf';
+
+export async function getStaticPaths() {
+  return (await publicSongs()).map((song) => ({ params: { slug: song.slug }, props: { song } }));
+}
+
+const { song } = Astro.props;
+const credits = creditLine({ ...song, url: '' });
+---
+
+<Base title={song.title} description={`Polskie tłumaczenie „${song.originalTitle}”: tekst, PDF i plik do ProPresentera.`}>
+  <section class="kontener pt-10 pb-10 md:pt-16">
+    <a href="/uwielbienie" class="font-semibold underline decoration-pomarancz underline-offset-4">← Wszystkie piosenki</a>
+    {song.sample && (
+      <p class="mt-6 inline-block rounded-full bg-pomarancz px-4 py-1 text-sm font-semibold text-braz">
+        Przykładowa piosenka - usuń przed publikacją
+      </p>
+    )}
+    <h1 class="font-akcent mt-6 text-[clamp(2.75rem,8vw,5rem)] text-balance">{song.title}</h1>
+    <p class="mt-4 text-lg">
+      Oryginał:
+      {song.originalUrl ? (
+        <a href={song.originalUrl} rel="noopener" class="font-semibold underline underline-offset-4">„{song.originalTitle}”</a>
+      ) : (
+        <strong>„{song.originalTitle}”</strong>
+      )}
+      · {song.originalAuthors.join(', ')}
+    </p>
+    <p class="mt-1 opacity-80">Tłumaczenie: {song.translators.join(', ')}</p>
+
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a href={`/uwielbienie/${song.slug}.pdf`} download class="rounded-full bg-zielen px-6 py-3.5 font-semibold text-bez transition hover:bg-braz">
+        Pobierz PDF
+      </a>
+      <a href="#propresenter" class="rounded-full px-6 py-3.5 font-semibold ring-2 ring-zielen ring-inset transition hover:bg-zielen/10">
+        ProPresenter
+      </a>
+    </div>
+
+    {song.demo && (
+      <div class="mt-8 max-w-xl">
+        <AudioPlayer src={song.demo} title={song.title} />
+      </div>
+    )}
+  </section>
+
+  <section class="kontener grid gap-10 pb-16 lg:grid-cols-[1fr_24rem] lg:items-start">
+    <div class="rounded-(--radius-duzy) bg-bez-jasny p-8 ring-1 ring-zielen/15 md:p-12">
+      <h2 class="sr-only">Tekst</h2>
+      <div class="space-y-8">
+        {
+          song.sections.map((s) => (
+            <div>
+              {s.label && <h3 class="mb-2 text-sm font-semibold tracking-wide text-pomarancz uppercase">{s.label}</h3>}
+              <p class="text-lg leading-relaxed whitespace-pre-line text-braz">{s.lines.join('\n')}</p>
+            </div>
+          ))
+        }
+      </div>
+      <p class="mt-10 border-t border-zielen/15 pt-5 text-sm leading-relaxed opacity-80">{credits}</p>
+    </div>
+
+    <aside id="propresenter" class="scroll-mt-24 rounded-(--radius-duzy) bg-zielen p-7 text-bez lg:sticky lg:top-24" data-pp={JSON.stringify(song.sections)}>
+      <h2 class="font-naglowek text-xl text-bursztyn">Do ProPresentera</h2>
+      <p class="mt-3 text-[0.95rem] leading-relaxed text-bez/85">
+        Skopiuj tekst i wklej w ProPresenterze: <em>Plik → Importuj → Tekst</em> lub do nowej prezentacji. Pusta linia
+        oznacza nowy slajd.
+      </p>
+
+      <fieldset class="mt-6">
+        <legend class="mb-2 text-sm font-semibold">Linii na slajd</legend>
+        <div class="flex gap-2">
+          {[2, 4].map((n) => (
+            <label class="cursor-pointer rounded-full px-4 py-1.5 text-sm font-semibold ring-2 ring-bez/60 ring-inset has-checked:bg-bez has-checked:text-zielen">
+              <input type="radio" name="lines" value={n} checked={n === 2} class="sr-only" /> {n}
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <fieldset class="mt-5">
+        <legend class="mb-2 text-sm font-semibold">Nazwy sekcji</legend>
+        <div class="flex flex-wrap gap-2">
+          {[
+            ['en', 'Verse / Chorus'],
+            ['pl', 'Zwrotka / Refren'],
+            ['brak', 'Bez nazw'],
+          ].map(([value, label]) => (
+            <label class="cursor-pointer rounded-full px-4 py-1.5 text-sm font-semibold ring-2 ring-bez/60 ring-inset has-checked:bg-bez has-checked:text-zielen">
+              <input type="radio" name="labels" value={value} checked={value === 'en'} class="sr-only" /> {label}
+            </label>
+          ))}
+        </div>
+        <p class="mt-2 text-xs text-bez/70">Angielskie nazwy ProPresenter sam zamienia na grupy slajdów.</p>
+      </fieldset>
+
+      <textarea
+        readonly
+        rows="9"
+        aria-label="Tekst do ProPresentera"
+        class="mt-5 w-full resize-y rounded-2xl bg-braz/40 p-4 font-mono text-xs leading-relaxed text-bez"
+        data-pp-out></textarea>
+
+      <div class="mt-4 flex flex-wrap gap-2">
+        <button type="button" data-pp-copy class="cursor-pointer rounded-full bg-bursztyn px-5 py-2.5 font-semibold text-braz">
+          Kopiuj tekst
+        </button>
+        <a href={`/uwielbienie/${song.slug}.txt`} download class="rounded-full px-5 py-2.5 font-semibold ring-2 ring-bez/60 ring-inset">
+          Pobierz .txt
+        </a>
+      </div>
+    </aside>
+  </section>
+</Base>
+
+<script>
+  import { toProPresenter, type LabelMode, type Section } from '../../lib/songs';
+
+  const root = document.querySelector<HTMLElement>('[data-pp]');
+  if (root) {
+    const sections = JSON.parse(root.dataset.pp ?? '[]') as Section[];
+    const out = root.querySelector<HTMLTextAreaElement>('[data-pp-out]')!;
+    const copy = root.querySelector<HTMLButtonElement>('[data-pp-copy]')!;
+    const value = (name: string) => root.querySelector<HTMLInputElement>(`input[name="${name}"]:checked`)!.value;
+    const render = () =>
+      (out.value = toProPresenter(sections, { linesPerSlide: Number(value('lines')), labels: value('labels') as LabelMode }));
+    root.addEventListener('change', render);
+    render();
+    copy.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(out.value);
+        copy.textContent = 'Skopiowano ✓';
+      } catch {
+        out.select();
+        copy.textContent = 'Zaznaczono - skopiuj Ctrl+C';
+      }
+      setTimeout(() => (copy.textContent = 'Kopiuj tekst'), 2200);
+    });
+  }
+</script>

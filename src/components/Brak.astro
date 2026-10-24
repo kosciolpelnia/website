@@ -1,0 +1,14 @@
+---
+// A visible gap in content the Zbór has not supplied yet. Searchable as "DO UZUPEŁNIENIA".
+interface Props {
+  co: string;
+}
+const { co } = Astro.props;
+---
+
+<mark
+  class="rounded-md border border-dashed border-pomarancz bg-bursztyn/25 px-1.5 py-0.5 text-[0.85em] font-medium text-braz"
+  data-brak
+>
+  DO UZUPEŁNIENIA: {co}
+</mark>

@@ -1,0 +1,39 @@
+---
+interface Props {
+  value: string;
+  label?: string;
+  class?: string;
+}
+const { value, label = 'Kopiuj', class: className } = Astro.props;
+---
+
+<button
+  type="button"
+  data-copy={value}
+  class:list={[
+    'cursor-pointer rounded-full px-4 py-2 text-sm font-semibold ring-2 ring-current ring-inset transition hover:bg-current/10',
+    className,
+  ]}
+>
+  <span data-copy-label>{label}</span>
+</button>
+
+<script>
+  // One delegated handler for every copy button on the page.
+  if (!(window as any).__copyBound) {
+    (window as any).__copyBound = true;
+    document.addEventListener('click', async (e) => {
+      const button = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-copy]');
+      if (!button) return;
+      const label = button.querySelector<HTMLElement>('[data-copy-label]');
+      const original = label?.textContent ?? '';
+      try {
+        await navigator.clipboard.writeText(button.dataset.copy ?? '');
+        if (label) label.textContent = 'Skopiowano ✓';
+      } catch {
+        if (label) label.textContent = 'Nie udało się skopiować';
+      }
+      setTimeout(() => label && (label.textContent = original), 2000);
+    });
+  }
+</script>

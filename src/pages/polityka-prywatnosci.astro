@@ -1,0 +1,60 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Brak from '../components/Brak.astro';
+import Szkic from '../components/Szkic.astro';
+import { site } from '../data/site';
+---
+
+<Base title="Polityka prywatności" description="Jak Kościół Pełnia przetwarza dane osobowe na stronie kosciolpelnia.pl.">
+  <PageHero title="Polityka prywatności" />
+  <section class="kontener pb-16">
+    <Szkic>
+      <div class="proza">
+        <p>
+          Ta strona nie używa plików cookies, nie ma formularzy i nie śledzi odwiedzających. Poniżej wyjaśniamy, kiedy
+          mimo to możemy przetwarzać Twoje dane.
+        </p>
+
+        <h2>Administrator danych</h2>
+        <p>
+          {site.legalName}, ul. <Brak co="adres siedziby zboru" />, NIP: {site.nip ?? <Brak co="NIP" />}. Kontakt:
+          <a href={`mailto:${site.email}`}>{site.email}</a>.
+        </p>
+
+        <h2>Statystyki odwiedzin</h2>
+        <p>
+          Korzystamy z Vercel Web Analytics, które liczy odwiedziny bez cookies i bez identyfikowania osób. Nie zapisujemy
+          adresów IP ani nie tworzymy profili.
+        </p>
+
+        <h2>Korespondencja e-mail</h2>
+        <p>
+          Jeśli do nas napiszesz, przetwarzamy Twój adres i treść wiadomości tylko po to, żeby odpowiedzieć (art. 6 ust. 1
+          lit. f RODO). Wiadomości przechowujemy nie dłużej, niż to potrzebne do prowadzenia rozmowy.
+        </p>
+
+        <h2>Darowizny</h2>
+        <p>
+          Przy przelewie otrzymujemy dane, które przekazuje bank: imię i nazwisko, numer rachunku, kwotę i tytuł. Przy
+          płatności online operatorem płatności jest Stripe Payments Europe Ltd., który przetwarza dane karty zgodnie ze
+          swoją polityką prywatności. Dane darczyńców przechowujemy przez okres wymagany przepisami podatkowymi i
+          rachunkowymi (art. 6 ust. 1 lit. c RODO).
+        </p>
+
+        <h2>Twoje prawa</h2>
+        <p>
+          Masz prawo dostępu do swoich danych, ich sprostowania, usunięcia lub ograniczenia przetwarzania, a także prawo
+          sprzeciwu. Możesz też złożyć skargę do Prezesa Urzędu Ochrony Danych Osobowych. Pamiętaj, że jako związek
+          wyznaniowy możemy stosować także wewnętrzne przepisy Kościoła o ochronie danych (art. 91 RODO).
+        </p>
+
+        <h2>Linki zewnętrzne</h2>
+        <p>
+          Linki do Instagrama, Facebooka i Google Maps prowadzą do serwisów, które mają własne zasady prywatności. Na
+          naszej stronie nie osadzamy ich treści.
+        </p>
+      </div>
+    </Szkic>
+  </section>
+</Base>
