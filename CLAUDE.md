@@ -2,6 +2,10 @@
 
 Public website of Kościół Pełnia (Wieliczka) at kosciolpelnia.pl. Astro 7, static, Tailwind 4, Vercel. Read `CONTEXT.md` (vocabulary – use it exactly) and `docs/adr/` before changing things.
 
+## Content and credentials
+
+Content lives in Sanity (project `nzupjjh7`, private dataset `production`, panel https://kosciolpelnia.sanity.studio, source in `studio/` with its own `package.json`). Every build needs `SANITY_READ_TOKEN` in `.env`: `OP_ACCOUNT=my.1password.eu op inject -i .env.tpl -o .env -f` (note `env-pelna-webpage`). Seed data: `studio/seed/seed.ndjson`.
+
 ## Commands
 
 Node comes from fnm (`eval "$(fnm env)"` in a fresh shell; Node 24).
