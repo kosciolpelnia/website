@@ -11,7 +11,7 @@ Content lives in Sanity (project `nzupjjh7`, private dataset `production`, panel
 Node comes from fnm (`eval "$(fnm env)"` in a fresh shell; Node 24).
 
 - `npm run dev` – dev server on :4321 (the preview pane uses `.claude/launch.json`, name `pelnia-dev`)
-- `npm run build` – static build into `dist/`, then `scripts/check-dist.mjs` (the rights gate, ADR-0003)
+- `npm run build` – static build into `dist/`, then `scripts/check-dist.ts` (the rights gate, ADR-0003)
 - `npm run check` – Astro/TypeScript diagnostics
 - `npm test` – vitest unit tests (`src/lib/*.test.ts`)
 
