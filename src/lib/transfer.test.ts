@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { site } from '../data/site';
+import { defaults as site } from '../data/site';
 import { formatAccount, isValidNrb, transferQrPayload } from './transfer';
 
 describe('formatAccount', () => {

@@ -1,6 +1,8 @@
 ---
 import Base from '../layouts/Base.astro';
-import { site } from '../data/site';
+import { getSite } from '../lib/settings';
+
+const site = await getSite();
 
 const s = site.sunday;
 

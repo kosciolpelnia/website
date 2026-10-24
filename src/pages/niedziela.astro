@@ -2,7 +2,9 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Brak from '../components/Brak.astro';
-import { site } from '../data/site';
+import { getSite } from '../lib/settings';
+
+const site = await getSite();
 
 const s = site.sunday;
 

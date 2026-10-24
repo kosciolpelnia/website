@@ -1,25 +1,38 @@
 import { defineCollection } from 'astro:content';
-import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { queries, sanityClient } from './lib/sanity';
 
-// Piosenka: one translated song. Files live in src/content/piosenki/ until the Sanity
-// panel replaces this loader (ADR-0001); the schema is the contract both must meet.
+// Piosenka: one translated song, edited in Sanity (ADR-0001). The zod schema is the contract
+// between the panel (studio/schemas/piosenka.ts) and the pages.
 const piosenki = defineCollection({
-  loader: glob({ pattern: '*.md', base: './src/content/piosenki' }),
+  loader: {
+    name: 'sanity-piosenki',
+    load: async ({ store, parseData, logger }) => {
+      const songs = await sanityClient().fetch<Array<Record<string, unknown> & { id: string; lyrics?: string }>>(
+        queries.publicSongs,
+      );
+      store.clear();
+      for (const { id, lyrics, ...rest } of songs) {
+        const data = await parseData({ id, data: rest });
+        store.set({ id, data, body: lyrics ?? '' });
+      }
+      logger.info(`${songs.length} public songs from Sanity`);
+    },
+  },
   schema: z.object({
     title: z.string(),
     originalTitle: z.string(),
     originalAuthors: z.array(z.string()).min(1),
     translators: z.array(z.string()).min(1),
-    publisher: z.string().optional(),
-    ccli: z.string().optional(),
-    originalUrl: z.url().optional(),
+    publisher: z.string().nullish(),
+    ccli: z.string().nullish(),
+    originalUrl: z.url().nullish(),
     status: z.enum(['brak', 'w-trakcie', 'zgoda']),
-    /** Path under /public or a full URL to the MP3 demo of the Polish version. */
-    demo: z.string().optional(),
-    themes: z.array(z.string()).default([]),
+    /** URL of the MP3 demo of the Polish version (Sanity CDN). */
+    demo: z.string().nullish(),
+    themes: z.array(z.string()).nullish().transform((t) => t ?? []),
     /** Marks sample content shipped with the scaffold; never meant for real use. */
-    sample: z.boolean().default(false),
+    sample: z.boolean().nullish().transform((s) => s ?? false),
     publishedAt: z.coerce.date().optional(),
   }),
 });

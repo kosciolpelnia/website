@@ -23,8 +23,8 @@ export interface PdfSong {
   originalTitle: string;
   originalAuthors: string[];
   translators: string[];
-  publisher?: string;
-  ccli?: string;
+  publisher?: string | null;
+  ccli?: string | null;
   sections: Section[];
   url: string;
 }

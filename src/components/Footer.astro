@@ -1,7 +1,9 @@
 ---
 import Logo from './Logo.astro';
 import { nav } from '../data/nav';
-import { site } from '../data/site';
+import { getSite } from '../lib/settings';
+
+const site = await getSite();
 
 const s = site.sunday;
 ---
