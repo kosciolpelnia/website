@@ -1,6 +1,7 @@
 ---
 interface Props {
   eyebrow?: string;
+  /** Plain title; a `title` slot overrides it when part of it needs styling. */
   title: string;
   lead?: string;
 }
@@ -9,7 +10,7 @@ const { eyebrow, title, lead } = Astro.props;
 
 <section class="kontener pt-12 pb-10 md:pt-20 md:pb-14">
   {eyebrow && <p class="mb-4 font-semibold tracking-wide text-pomarancz uppercase">{eyebrow}</p>}
-  <h1 class="font-naglowek max-w-5xl text-[clamp(1.35rem,calc((100vw-4rem)/16),4.25rem)] text-balance">{title}</h1>
+  <h1 class="font-naglowek max-w-5xl text-[clamp(1.35rem,calc((100vw-4rem)/16),4.25rem)] text-balance">{Astro.slots.has('title') ? <slot name="title" /> : title}</h1>
   {lead && <p class="mt-6 max-w-2xl text-lg leading-relaxed text-pretty md:text-xl">{lead}</p>}
   <slot />
 </section>
