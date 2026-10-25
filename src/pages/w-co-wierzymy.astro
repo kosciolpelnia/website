@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
+import Photo from '../components/Photo.astro';
 
 // Our own wording of the eight points of the KZ confession (https://kz.pl/wyznanie-wiary/),
 // with references taken from the KZ commentary.
@@ -139,6 +140,7 @@ const history = [
     <div class="mx-auto max-w-[80rem] rounded-(--radius-duzy) bg-zielen text-bez">
       <div class="kontener py-14 md:py-20">
         <h2 id="praktyka" class="font-naglowek text-3xl md:text-4xl">Jak to wygląda w praktyce</h2>
+        <Photo slot="chrzest" width={1088} onDark class="mt-10 rounded-(--radius-karta)" />
         <ul class="mt-10 grid gap-4 md:grid-cols-2">
           {
             practice.map((item) => (

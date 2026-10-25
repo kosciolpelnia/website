@@ -4,6 +4,7 @@ import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import CopyButton from '../components/CopyButton.astro';
 import Brak from '../components/Brak.astro';
+import Photo from '../components/Photo.astro';
 import { getSite } from '../lib/settings';
 import { digitsOnly, formatAccount, transferQrPayload } from '../lib/transfer';
 
@@ -31,7 +32,8 @@ const purposes = await Promise.all(
     lead="Jesteśmy wdzięczni za Twoją hojność, dzięki której Kościół Pełnia może jeszcze lepiej działać w naszym mieście i docierać do jeszcze większej liczby osób."
   />
 
-  <section class="kontener pb-10">
+  <section class="kontener grid gap-8 pb-10 lg:grid-cols-[1fr_1fr] lg:items-center lg:gap-14">
+    <Photo slot="miasto" width={540} class="rounded-(--radius-karta) lg:order-last" />
     <div class="proza">
       <p>
         Kościół utrzymuje się wyłącznie z dobrowolnych darowizn ludzi, którzy uważają go za swój dom. Z nich opłacamy

@@ -51,5 +51,8 @@ _Avoid_: datek, opłata, składka
 **Ustawienia strony**:
 The facts shown across pages: address, times, Pastorzy, bank data, contact links. In `src/data/site.ts` today; a Sanity singleton later (ADR-0001). A `null` there renders as a visible „DO UZUPEŁNIENIA” mark.
 
+**Zdjęcie**:
+A photo slot on the site (list in `src/data/photos.ts`, shot list for photographers in `docs/zdjecia.md`), filled in Ustawienia strony → Zdjęcia with an image, its hotspot and an alt text. Each slot has a fixed crop; an empty slot shows a dashed frame describing the shot. Never stock photos of strangers; identifiable people need consent, children their parents' written consent.
+
 **Szkic**:
 Copy drafted for the Zbór that the pastors have not approved yet, wrapped in `<Szkic>` so it shows as such. Approving it means removing the wrapper.

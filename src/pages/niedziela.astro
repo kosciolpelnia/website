@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Brak from '../components/Brak.astro';
 import Kids from '../components/Kids.astro';
+import Photo from '../components/Photo.astro';
 import { getSite } from '../lib/settings';
 
 const site = await getSite();
@@ -96,6 +97,17 @@ const faq = [
         Otwórz w Google Maps
       </a>
     </div>
+  </section>
+
+  <section class="kontener grid gap-4 pb-6 sm:grid-cols-2" aria-label="Zdjęcia">
+    <figure>
+      <Photo slot="wejscie" width={540} class="rounded-(--radius-karta)" />
+      <figcaption class="mt-3 text-sm font-semibold">Tak wygląda wejście: ul. {s.street}</figcaption>
+    </figure>
+    <figure>
+      <Photo slot="kawa" width={540} class="rounded-(--radius-karta)" />
+      <figcaption class="mt-3 text-sm font-semibold">Kawa przed i po nabożeństwie</figcaption>
+    </figure>
   </section>
 
   <Kids kids={s.kids} />

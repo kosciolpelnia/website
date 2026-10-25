@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Kids from '../components/Kids.astro';
+import Photo from '../components/Photo.astro';
 import { getSite } from '../lib/settings';
 
 const site = await getSite();
@@ -53,14 +54,11 @@ const tiles = [
       </div>
     </div>
 
-    <figure class="@container relative overflow-hidden rounded-(--radius-duzy) bg-zielen p-8 text-bez md:p-12">
-      <div aria-hidden="true" class="absolute top-0 bottom-0 left-[38%] w-[3px] rounded-full bg-bez/20"></div>
-      <div aria-hidden="true" class="absolute top-[58%] right-0 left-[18%] h-[3px] rounded-full bg-bez/20"></div>
-      <blockquote class="relative">
-        <p class="font-akcent text-[min(4rem,calc(100cqw/5.5))] text-bez">„Wy jesteście solą ziemi”</p>
-      </blockquote>
-      <figcaption class="relative mt-24 text-right font-semibold tracking-wide text-bursztyn uppercase md:mt-36">
-        {site.verse.ref}
+    <figure class="relative">
+      <Photo slot="glowna" width={560} eager class="rounded-(--radius-duzy)" />
+      <figcaption class="absolute right-4 bottom-4 left-4 rounded-(--radius-karta) bg-zielen p-5 text-bez shadow-[0_20px_40px_-20px_rgb(45_35_27/0.6)] sm:right-auto sm:w-80 md:-left-8 md:p-6">
+        <blockquote class="font-akcent text-2xl md:text-3xl">„Wy jesteście solą ziemi”</blockquote>
+        <p class="mt-2 text-sm font-semibold tracking-wide text-bursztyn uppercase">{site.verse.ref}</p>
       </figcaption>
     </figure>
   </section>

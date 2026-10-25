@@ -2,6 +2,15 @@
 // "ustawienia" overrides any field it fills in (src/lib/settings.ts, ADR-0001).
 // `null` means "not supplied yet": pages render a visible placeholder instead (see <Brak />).
 
+import type { PhotoKey } from './photos';
+
+/** A Sanity image object as stored (asset reference plus the editor's crop and hotspot). */
+export interface SanityImage {
+  asset: { _ref: string };
+  crop?: Record<string, number>;
+  hotspot?: Record<string, number>;
+}
+
 export interface Site {
   name: string;
   legalName: string;
@@ -28,6 +37,8 @@ export interface Site {
     parking: string | null;
   };
   pastors: { names: string; role: string; bio: string; photo: string | null }[];
+  /** Uploaded photos by slot (src/data/photos.ts); a missing slot renders a placeholder. */
+  photos: Partial<Record<PhotoKey, { image: SanityImage; alt: string }>>;
   giving: {
     recipient: string;
     account: string;
@@ -86,6 +97,8 @@ export const defaults: Site = {
       photo: null,
     },
   ],
+
+  photos: {},
 
   giving: {
     recipient: 'Kościół Pełnia',

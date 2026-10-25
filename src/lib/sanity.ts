@@ -26,7 +26,7 @@ export const queries = {
   gatedSongs: `*[_type == "piosenka" && status != "zgoda"]{ "slug": slug.current, title }`,
   sampleSongs: `*[_type == "piosenka" && sample == true].title`,
   settings: `*[_id == "ustawienia"][0]{
-    sunday, giving, contact,
+    sunday, giving, contact, zdjecia,
     "pastors": pastors[]{ names, role, bio, "photo": photo.asset->url }
   }`,
 };

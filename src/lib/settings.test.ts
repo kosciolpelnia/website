@@ -25,6 +25,19 @@ describe('mergeSettings', () => {
     expect(site.giving.purposes).toEqual(defaults.giving.purposes);
   });
 
+  it('keeps only photos with an uploaded image and falls back to the slot label for alt', () => {
+    const site = mergeSettings({
+      zdjecia: {
+        glowna: { image: { asset: { _ref: 'image-abc-800x1000-jpg' } } },
+        kawa: { alt: 'Bez obrazu' },
+        nieznany: { image: { asset: { _ref: 'image-x-1x1-jpg' } } },
+      },
+    });
+    expect(site.photos).toEqual({
+      glowna: { image: { asset: { _ref: 'image-abc-800x1000-jpg' } }, alt: 'Uwielbienie na nabożeństwie' },
+    });
+  });
+
   it('drops half-filled list rows instead of showing gaps', () => {
     const site = mergeSettings({
       pastors: [{ names: 'Daniel i Nastia', bio: 'Opis', photo: 'https://cdn.sanity.io/x.jpg' }, { names: 'Bez opisu' }],

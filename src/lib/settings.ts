@@ -1,5 +1,6 @@
 // Ustawienia strony: the Sanity document "ustawienia" laid over the defaults in src/data/site.ts.
-import { defaults, type Site } from '../data/site';
+import { photoSlots } from '../data/photos';
+import { defaults, type SanityImage, type Site } from '../data/site';
 import { queries, sanityClient } from './sanity';
 
 /** What the "ustawienia" query returns; every field may be missing or empty. */
@@ -13,6 +14,7 @@ export interface SettingsDoc {
   } | null;
   contact?: Partial<Record<'email' | 'instagram' | 'facebook', string | null>> | null;
   pastors?: { names?: string; role?: string; bio?: string; photo?: string | null }[] | null;
+  zdjecia?: Record<string, { image?: SanityImage | null; alt?: string | null } | null> | null;
 }
 
 const pick = <T,>(value: T | null | undefined, fallback: T): T =>
@@ -38,6 +40,11 @@ export function mergeSettings(doc: SettingsDoc | null, base: Site = defaults): S
     bio: p.bio,
     photo: (p as { photo?: string | null }).photo ?? null,
   }));
+  const photos: Site['photos'] = {};
+  for (const slot of photoSlots) {
+    const p = doc?.zdjecia?.[slot.key];
+    if (p?.image?.asset?._ref) photos[slot.key] = { image: p.image, alt: pick(p.alt, slot.label) };
+  }
   const street = pick(s.street, base.sunday.street);
   const postalCode = pick(s.postalCode, base.sunday.postalCode);
   const city = pick(s.city, base.sunday.city);
@@ -59,6 +66,7 @@ export function mergeSettings(doc: SettingsDoc | null, base: Site = defaults): S
       parking: pick(s.parking, base.sunday.parking),
     },
     pastors: pastors.length ? pastors : base.pastors,
+    photos,
     giving: {
       ...base.giving,
       recipient: pick(g.recipient, base.giving.recipient),

@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
+import Photo from '../../components/Photo.astro';
 import { publicSongs } from '../../lib/catalog';
 import { coverUrl, searchText, songCount } from '../../lib/songs';
 
@@ -17,6 +18,10 @@ const authors = [...new Set(songs.flatMap((s) => s.originalAuthors))].sort((a, b
     title="Pieśni dla polskich kościołów"
     lead="Tłumaczymy pieśni uwielbienia na polski i dzielimy się nimi za darmo. Pobierz tekst w PDF, posłuchaj demo albo skopiuj tekst prosto do ProPresentera."
   />
+
+  <div class="kontener pb-12">
+    <Photo slot="zespol" width={1088} eager class="rounded-(--radius-duzy)" />
+  </div>
 
   <section class="kontener pb-16" aria-labelledby="lista">
     <h2 id="lista" class="sr-only">Piosenki</h2>

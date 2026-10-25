@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Brak from '../components/Brak.astro';
 import Szkic from '../components/Szkic.astro';
+import Photo from '../components/Photo.astro';
 import { getSite } from '../lib/settings';
 
 const site = await getSite();
@@ -37,6 +38,10 @@ const values = [
     title="Młody kościół w starym mieście soli"
     lead="Jesteśmy nowym zborem zielonoświątkowym w Wieliczce: ludźmi w różnym wieku i z różnych historii, których łączy Jezus. Chcemy razem poznawać Boga i służyć miastu, w którym żyjemy."
   />
+
+  <div class="kontener pb-16">
+    <Photo slot="spolecznosc" width={1088} eager class="rounded-(--radius-duzy)" />
+  </div>
 
   <section class="kontener grid gap-10 pb-16 md:grid-cols-2 md:gap-16">
     <div class="rounded-(--radius-duzy) bg-zielen p-8 text-bez md:p-12">

@@ -1,0 +1,64 @@
+---
+// A photo slot (src/data/photos.ts): the image from Ustawienia strony → Zdjęcia, cropped to the
+// slot's aspect around the editor's hotspot, or a visible placeholder until one is uploaded.
+import { createImageUrlBuilder } from '@sanity/image-url';
+import { photoSlot, type PhotoKey } from '../data/photos';
+import { getSite } from '../lib/settings';
+import { sanityProject } from '../lib/sanity';
+
+interface Props {
+  slot: PhotoKey;
+  class?: string;
+  /** Rendered width in CSS px at the largest layout, for the srcset. */
+  width?: number;
+  eager?: boolean;
+  /** Placeholder colours for a dark (green) background. */
+  onDark?: boolean;
+}
+
+const { slot, class: className, width = 900, eager = false, onDark = false } = Astro.props;
+const meta = photoSlot(slot);
+const [aw, ah] = meta.aspect;
+const photo = (await getSite()).photos[slot];
+const builder = createImageUrlBuilder(sanityProject);
+const src = (w: number) => builder.image(photo!.image).width(w).height(Math.round((w * ah) / aw)).fit('crop').auto('format').url();
+const widths = [0.5, 1, 1.5, 2].map((f) => Math.round(width * f));
+---
+
+{
+  photo ? (
+    <img
+      src={src(width)}
+      srcset={widths.map((w) => `${src(w)} ${w}w`).join(', ')}
+      sizes={`(min-width: 72rem) ${width}px, 100vw`}
+      alt={photo.alt}
+      width={width}
+      height={Math.round((width * ah) / aw)}
+      loading={eager ? 'eager' : 'lazy'}
+      decoding="async"
+      class:list={['w-full object-cover', className]}
+      style={`aspect-ratio:${aw}/${ah}`}
+    />
+  ) : (
+    <div
+      class:list={[
+        'flex w-full flex-col items-center justify-center gap-2 border-2 border-dashed p-6 text-center',
+        onDark ? 'border-bez/30 bg-bez/[0.06] text-bez' : 'border-zielen/30 bg-zielen/[0.06] text-zielen',
+        className,
+      ]}
+      style={`aspect-ratio:${aw}/${ah}`}
+      data-brak
+      role="img"
+      aria-label={`Miejsce na zdjęcie: ${meta.label}`}
+    >
+      <svg viewBox="0 0 24 24" class="size-8 opacity-60" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+        <rect x="3" y="5" width="18" height="14" rx="3" />
+        <circle cx="9" cy="10" r="1.8" />
+        <path d="m21 16-5-5-8 8" />
+      </svg>
+      <span class="text-xs font-semibold tracking-wide uppercase opacity-70">Miejsce na zdjęcie</span>
+      <span class="max-w-xs font-bold text-balance">{meta.label}</span>
+      <span class="hidden max-w-sm text-sm leading-snug text-pretty opacity-75 sm:block">{meta.brief}</span>
+    </div>
+  )
+}

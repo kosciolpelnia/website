@@ -2,6 +2,7 @@
 // Kościół dziecięcy: families with children are the Zbór's main audience, so this block sits
 // high on both the home and the Sunday page.
 import type { Site } from '../data/site';
+import Photo from './Photo.astro';
 
 interface Props {
   kids: Site['sunday']['kids'];
@@ -31,6 +32,8 @@ const tones = ['bg-zielen text-bez', 'bg-bursztyn text-braz', 'bg-pomarancz text
       )
     }
   </div>
+  <div class="space-y-4">
+  <Photo slot="dzieci" width={640} class="rounded-(--radius-karta)" />
   <ul class="grid gap-4 sm:grid-cols-2">
     {
       kids.map((group, i) => (
@@ -42,4 +45,5 @@ const tones = ['bg-zielen text-bez', 'bg-bursztyn text-braz', 'bg-pomarancz text
       ))
     }
   </ul>
+  </div>
 </section>

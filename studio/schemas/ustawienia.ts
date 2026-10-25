@@ -1,4 +1,5 @@
 import { defineField, defineType } from 'sanity';
+import { photoSlots } from '../../src/data/photos';
 
 // Ustawienia strony (CONTEXT.md): one document, id "ustawienia". Empty fields fall back to
 // src/data/site.ts on the site, and missing facts there show as „DO UZUPEŁNIENIA”.
@@ -11,6 +12,7 @@ export const ustawienia = defineType({
     { name: 'pastorzy', title: 'Pastorzy' },
     { name: 'darowizny', title: 'Darowizny' },
     { name: 'kontakt', title: 'Kontakt' },
+    { name: 'zdjecia', title: 'Zdjęcia' },
   ],
   fields: [
     defineField({
@@ -115,6 +117,25 @@ export const ustawienia = defineType({
         defineField({ name: 'instagram', title: 'Instagram (link)', type: 'url' }),
         defineField({ name: 'facebook', title: 'Facebook (link)', type: 'url' }),
       ],
+    }),
+    defineField({
+      name: 'zdjecia',
+      title: 'Zdjęcia',
+      description: 'Puste miejsce pokazuje na stronie ramkę z opisem. Ustaw punkt centralny kadru (ikona celownika), żeby przycięcie nie ucinało twarzy. Lista ujęć: docs/zdjecia.md w repozytorium.',
+      type: 'object',
+      group: 'zdjecia',
+      fields: photoSlots.map((slot) =>
+        defineField({
+          name: slot.key,
+          title: `${slot.label} (${slot.aspect.join(':')})`,
+          description: `${slot.page}. ${slot.brief}`,
+          type: 'object',
+          fields: [
+            { name: 'image', title: 'Zdjęcie', type: 'image', options: { hotspot: true } },
+            { name: 'alt', title: 'Opis dla niewidomych', type: 'string', description: 'Jedno zdanie: co widać na zdjęciu.' },
+          ],
+        }),
+      ),
     }),
   ],
   preview: { prepare: () => ({ title: 'Ustawienia strony' }) },
