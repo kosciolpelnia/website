@@ -38,16 +38,11 @@ export function transferQrPayload(input: {
     digitsOnly(input.account),
     amount,
     clean(input.recipient, 20),
-    clean(input.title, 32),
+    // ZBP recommends 32 characters, but the Zbór wants the full PIT wording; bank apps accept it.
+    clean(input.title, 100),
     '',
     '',
     '',
   ].join('|');
 }
 
-/** ZBP limits the QR title to 32 characters: use the full title when it fits, else "Darowizna - <cel>". */
-export function qrTitle(purpose: { name: string; title: string }): string {
-  if (purpose.title.length <= 32) return purpose.title;
-  const short = /^darowizna\b/i.test(purpose.name) ? purpose.name : `Darowizna - ${purpose.name}`;
-  return short.slice(0, 32);
-}

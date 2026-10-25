@@ -5,7 +5,7 @@ import PageHero from '../components/PageHero.astro';
 import CopyButton from '../components/CopyButton.astro';
 import Brak from '../components/Brak.astro';
 import { getSite } from '../lib/settings';
-import { digitsOnly, formatAccount, qrTitle, transferQrPayload } from '../lib/transfer';
+import { digitsOnly, formatAccount, transferQrPayload } from '../lib/transfer';
 
 const site = await getSite();
 
@@ -17,7 +17,7 @@ const purposes = await Promise.all(
     ...p,
     id: `cel-${i}`,
     qr: await QRCode.toString(
-      transferQrPayload({ account: g.account, recipient: g.recipient, title: qrTitle(p) }),
+      transferQrPayload({ account: g.account, recipient: g.recipient, title: p.title }),
       { type: 'svg', margin: 0, errorCorrectionLevel: 'M', color: { dark: '#2d231b', light: '#00000000' } },
     ),
   })),

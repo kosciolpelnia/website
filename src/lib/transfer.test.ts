@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { defaults as site } from '../data/site';
-import { formatAccount, isValidNrb, qrTitle, transferQrPayload } from './transfer';
+import { formatAccount, isValidNrb, transferQrPayload } from './transfer';
 
 describe('formatAccount', () => {
   it('groups an NRB as banks print it', () => {
@@ -34,11 +34,10 @@ describe('transferQrPayload', () => {
   });
 });
 
-describe('qrTitle', () => {
-  it('keeps short titles and shortens long ones without cutting words', () => {
-    expect(qrTitle({ name: 'Ofiara', title: 'Ofiara' })).toBe('Ofiara');
-    expect(qrTitle({ name: 'Dziesięcina', title: 'Darowizna na cele kultu religijnego - dziesięcina' })).toBe('Darowizna - Dziesięcina');
-    expect(qrTitle({ name: 'Darowizna ogólna', title: 'Darowizna na cele kultu religijnego' })).toBe('Darowizna ogólna');
-    for (const p of site.giving.purposes) expect(qrTitle(p).length).toBeLessThanOrEqual(32);
+describe('transferQrPayload title', () => {
+  it('carries the full PIT wording, not a shortened one', () => {
+    expect(
+      transferQrPayload({ account: site.giving.account, recipient: 'Kościół Pełnia', title: 'Darowizna na cele kultu religijnego - dziesięcina' }),
+    ).toContain('|Darowizna na cele kultu religijnego - dziesięcina|');
   });
 });
