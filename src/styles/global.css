@@ -91,7 +91,7 @@
     font-stretch: 125%;
     font-weight: 600;
     text-transform: uppercase;
-    font-size: 1.25rem;
+    font-size: clamp(1.05rem, 5vw, 1.25rem);
     line-height: 1.2;
     margin-top: 2.25em;
   }

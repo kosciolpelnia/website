@@ -22,13 +22,13 @@ const credits = creditLine({ ...song, url: '' });
     )}
     <h1 class="font-akcent mt-6 text-[clamp(2.75rem,8vw,5rem)] text-balance">{song.title}</h1>
     <p class="mt-4 text-lg">
-      Oryginał:
+      Oryginał:{' '}
       {song.originalUrl ? (
         <a href={song.originalUrl} rel="noopener" class="font-semibold underline underline-offset-4">„{song.originalTitle}”</a>
       ) : (
         <strong>„{song.originalTitle}”</strong>
       )}
-      · {song.originalAuthors.join(', ')}
+      {' '}· {song.originalAuthors.join(', ')}
     </p>
     <p class="mt-1 opacity-80">Tłumaczenie: {song.translators.join(', ')}</p>
 

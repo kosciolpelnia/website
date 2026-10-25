@@ -20,7 +20,7 @@ const site = await getSite();
 
         <h2>Administrator danych</h2>
         <p>
-          {site.legalName}, ul. <Brak co="adres siedziby zboru" />, NIP: {site.nip ?? <Brak co="NIP" />}. Kontakt:
+          {site.legalName}, ul. <Brak co="adres siedziby zboru" />, NIP: {site.nip ?? <Brak co="NIP" />}. Kontakt:{' '}
           <a href={`mailto:${site.email}`}>{site.email}</a>.
         </p>
 
