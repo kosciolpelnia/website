@@ -90,3 +90,31 @@ export function toProPresenter(
   }
   return blocks.join('\n\n') + '\n';
 }
+
+/** Sanity CDN image URL cropped to a square of `size` px (2× for sharp screens is the caller's call). */
+export function coverUrl(url: string, size: number): string {
+  return `${url}?w=${size}&h=${size}&fit=crop&auto=format`;
+}
+
+/** Lower-cased, accent-free text a song is found by in the list filter. */
+export function searchText(song: {
+  title: string;
+  originalTitle: string;
+  originalAuthors: string[];
+  translators: string[];
+  album?: { title: string; artist?: string | null } | null;
+}): string {
+  return [song.title, song.originalTitle, ...song.originalAuthors, ...song.translators, song.album?.title, song.album?.artist]
+    .filter(Boolean)
+    .join(' ')
+    .toLocaleLowerCase('pl')
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+    .replace(/ł/g, 'l');
+}
+
+/** "1 piosenka", "3 piosenki", "5 piosenek", "22 piosenki" */
+export function songCount(n: number): string {
+  const few = n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20);
+  return `${n} ${n === 1 ? 'piosenka' : few ? 'piosenki' : 'piosenek'}`;
+}

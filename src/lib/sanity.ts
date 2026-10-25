@@ -20,7 +20,8 @@ export const queries = {
   publicSongs: `*[_type == "piosenka" && status == "zgoda" && defined(slug.current)]{
     "id": slug.current,
     title, originalTitle, originalAuthors, translators, publisher, ccli, originalUrl, status,
-    "demo": demo.asset->url, themes, sample, lyrics, "publishedAt": _createdAt
+    "demo": demo.asset->url, themes, sample, lyrics, "publishedAt": _createdAt,
+    "album": album->{ title, artist, year, "cover": cover.asset->url }
   }`,
   gatedSongs: `*[_type == "piosenka" && status != "zgoda"]{ "slug": slug.current, title }`,
   sampleSongs: `*[_type == "piosenka" && sample == true].title`,

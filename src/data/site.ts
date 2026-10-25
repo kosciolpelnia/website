@@ -94,7 +94,7 @@ export const defaults: Site = {
     purposes: [
       { name: 'Dziesięcina', title: 'Darowizna na cele kultu religijnego - dziesięcina' },
       { name: 'Ofiara', title: 'Darowizna na cele kultu religijnego - ofiara' },
-      { name: 'Cel bieżący', title: 'Darowizna na cele kultu religijnego' },
+      { name: 'Darowizna ogólna', title: 'Darowizna na cele kultu religijnego' },
     ],
     stripeUrl: 'https://donate.stripe.com/3cI14of3NdWv23O54R6g800',
   },

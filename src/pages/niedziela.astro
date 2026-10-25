@@ -9,6 +9,26 @@ const site = await getSite();
 
 const s = site.sunday;
 
+const service = [
+  {
+    title: 'Uwielbienie',
+    text: 'Śpiewamy współczesne pieśni, wiele z nich w naszych własnych tłumaczeniach. Teksty są na ekranie. Możesz śpiewać, słuchać albo po prostu być.',
+  },
+  {
+    title: 'Słowo Boże',
+    text: 'Kazanie, które łączy Biblię z codziennym życiem. Trwa zwykle 30-40 minut. W tym czasie dzieci od 3 lat idą na swoje zajęcia.',
+  },
+  {
+    title: 'Modlitwa',
+    text: 'Jako kościół zielonoświątkowy zostawiamy miejsce na modlitwę i działanie Ducha Świętego. Jeśli coś będzie dla Ciebie nowe, śmiało zapytaj nas po nabożeństwie.',
+  },
+  {
+    title: 'Wieczerza Pańska',
+    note: 'raz w miesiącu',
+    text: 'Razem łamiemy chleb i pijemy z kielicha na pamiątkę śmierci i zmartwychwstania Jezusa.',
+  },
+];
+
 const faq = [
   {
     q: 'W co się ubrać?',
@@ -95,31 +115,36 @@ const faq = [
     </ol>
   </section>
 
-  <section class="kontener py-16" aria-labelledby="nabozenstwo">
-    <div class="proza">
-      <h2 id="nabozenstwo">Co dzieje się podczas nabożeństwa</h2>
-      <p>
-        Zaczynamy od <strong>uwielbienia</strong>: śpiewamy współczesne pieśni, wiele z nich w naszych własnych
-        tłumaczeniach. Możesz śpiewać, słuchać albo po prostu być. Teksty wyświetlamy na ekranie.
+  <section class="kontener grid gap-10 py-16 md:py-24 lg:grid-cols-[1fr_1.4fr] lg:gap-16" aria-labelledby="nabozenstwo">
+    <div class="lg:sticky lg:top-28 lg:self-start">
+      <h2 id="nabozenstwo" class="font-naglowek text-3xl md:text-4xl">Co dzieje się podczas nabożeństwa</h2>
+      <p class="mt-5 max-w-md text-lg leading-relaxed text-pretty">
+        Nabożeństwo trwa około godziny. Nie musisz niczego znać ani umieć. Możesz po prostu przyjść i zobaczyć.
       </p>
-      <p>
-        Potem jest czas na <strong>Słowo Boże</strong>: kazanie, które łączy Biblię z codziennym życiem. Trwa zwykle
-        około 30-40 minut.
-      </p>
-      <p>
-        Jesteśmy kościołem zielonoświątkowym, więc w czasie nabożeństwa jest miejsce na <strong>modlitwę</strong> i
-        działanie Ducha Świętego. Jeśli coś będzie dla Ciebie nowe, śmiało zapytaj nas o to po spotkaniu.
-      </p>
-      <p>
-        Raz w miesiącu przyjmujemy razem <strong>Wieczerzę Pańską</strong>.
-      </p>
-
     </div>
+    <ol class="divide-y divide-zielen/15 border-y border-zielen/15">
+      {
+        service.map((step, i) => (
+          <li class="grid grid-cols-[3.5rem_1fr] gap-x-4 py-7 sm:grid-cols-[4.5rem_1fr]">
+            <span class="font-akcent text-5xl text-pomarancz sm:text-6xl">{i + 1}</span>
+            <div>
+              <h3 class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xl font-bold md:text-2xl">
+                {step.title}
+                {step.note && (
+                  <span class="rounded-full bg-bursztyn px-3 py-0.5 text-sm font-semibold text-braz">{step.note}</span>
+                )}
+              </h3>
+              <p class="mt-2 text-lg leading-relaxed text-pretty">{step.text}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
   </section>
 
-  <section class="kontener py-16" aria-labelledby="pytania">
-    <h2 id="pytania" class="font-naglowek mb-10 text-3xl md:text-4xl">Częste pytania</h2>
-    <div class="max-w-3xl divide-y divide-zielen/15 border-y border-zielen/15">
+  <section class="kontener py-16 md:py-24" aria-labelledby="pytania">
+    <h2 id="pytania" class="font-naglowek mb-10 text-center text-3xl md:text-4xl">Częste pytania</h2>
+    <div class="mx-auto max-w-3xl divide-y divide-zielen/15 border-y border-zielen/15">
       {
         faq.map((item) => (
           <details class="group py-5">
@@ -132,7 +157,7 @@ const faq = [
         ))
       }
     </div>
-    <p class="mt-10 text-lg">
+    <p class="mt-10 text-center text-lg">
       Masz inne pytanie? Napisz: <a href={`mailto:${site.email}`} class="font-semibold underline decoration-pomarancz underline-offset-4">{site.email}</a>
     </p>
   </section>

@@ -5,7 +5,7 @@ import PageHero from '../components/PageHero.astro';
 import CopyButton from '../components/CopyButton.astro';
 import Brak from '../components/Brak.astro';
 import { getSite } from '../lib/settings';
-import { digitsOnly, formatAccount, transferQrPayload } from '../lib/transfer';
+import { digitsOnly, formatAccount, qrTitle, transferQrPayload } from '../lib/transfer';
 
 const site = await getSite();
 
@@ -17,7 +17,7 @@ const purposes = await Promise.all(
     ...p,
     id: `cel-${i}`,
     qr: await QRCode.toString(
-      transferQrPayload({ nip: site.nip ?? undefined, account: g.account, recipient: g.recipient, title: p.title }),
+      transferQrPayload({ account: g.account, recipient: g.recipient, title: qrTitle(p) }),
       { type: 'svg', margin: 0, errorCorrectionLevel: 'M', color: { dark: '#2d231b', light: '#00000000' } },
     ),
   })),
@@ -79,7 +79,7 @@ const purposes = await Promise.all(
 
     <div class="rounded-(--radius-duzy) bg-bursztyn p-8 text-braz md:p-12">
       <h2 class="font-naglowek text-2xl">Kod QR</h2>
-      <p class="mt-3 leading-relaxed">Zeskanuj w aplikacji banku: numer konta, odbiorca i tytuł wpiszą się same, a Ty podasz tylko kwotę.</p>
+      <p class="mt-3 leading-relaxed">Otwórz aplikację banku i wybierz w niej skanowanie kodu QR (np. „Płatność kodem QR” lub „Skanuj”), nie zwykły aparat. Numer konta, odbiorca i tytuł wpiszą się same, a Ty podasz tylko kwotę.</p>
       <div class="mt-6" role="radiogroup" aria-label="Cel darowizny">
         {
           purposes.map((p, i) => (

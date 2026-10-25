@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { englishLabel, isPublic, parseLyrics, toProPresenter } from './songs';
+import { englishLabel, isPublic, parseLyrics, searchText, songCount, toProPresenter } from './songs';
 
 const lyrics = `
 [Zwrotka 1]
@@ -65,5 +65,28 @@ describe('englishLabel', () => {
     expect(englishLabel('Przedrefren')).toBe('Pre-Chorus');
     expect(englishLabel('Mostek')).toBe('Bridge');
     expect(englishLabel('Wstawka')).toBe('Wstawka');
+  });
+});
+
+describe('searchText', () => {
+  it('lets "zrodlo" find "Źródło" and covers authors and album', () => {
+    const text = searchText({
+      title: 'Źródło łaski',
+      originalTitle: 'Fountain',
+      originalAuthors: ['Brooke Ligertwood'],
+      translators: ['Daniel'],
+      album: { title: 'Seven', artist: 'Hillsong' },
+    });
+    expect(text).toContain('zrodlo laski');
+    expect(text).toContain('brooke ligertwood');
+    expect(text).toContain('hillsong');
+  });
+});
+
+describe('songCount', () => {
+  it('declines like Polish does', () => {
+    expect([0, 1, 2, 4, 5, 12, 22, 25, 104].map(songCount)).toEqual([
+      '0 piosenek', '1 piosenka', '2 piosenki', '4 piosenki', '5 piosenek', '12 piosenek', '22 piosenki', '25 piosenek', '104 piosenki',
+    ]);
   });
 });

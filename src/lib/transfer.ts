@@ -22,8 +22,9 @@ export function isValidNrb(account: string): boolean {
   return rest === 1;
 }
 
+// The NIP slot stays empty on purpose: a payload starting with digits makes phone cameras
+// offer to call it as a phone number. Bank apps read the transfer without it.
 export function transferQrPayload(input: {
-  nip?: string;
   account: string;
   amountGrosze?: number;
   recipient: string;
@@ -32,7 +33,7 @@ export function transferQrPayload(input: {
   const clean = (s: string, max: number) => s.replace(/\|/g, ' ').slice(0, max);
   const amount = input.amountGrosze ? String(Math.round(input.amountGrosze)).padStart(6, '0') : '';
   return [
-    digitsOnly(input.nip ?? ''),
+    '',
     'PL',
     digitsOnly(input.account),
     amount,
@@ -42,4 +43,11 @@ export function transferQrPayload(input: {
     '',
     '',
   ].join('|');
+}
+
+/** ZBP limits the QR title to 32 characters: use the full title when it fits, else "Darowizna - <cel>". */
+export function qrTitle(purpose: { name: string; title: string }): string {
+  if (purpose.title.length <= 32) return purpose.title;
+  const short = /^darowizna\b/i.test(purpose.name) ? purpose.name : `Darowizna - ${purpose.name}`;
+  return short.slice(0, 32);
 }

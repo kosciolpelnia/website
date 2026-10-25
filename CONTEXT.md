@@ -35,6 +35,9 @@ Where a Piosenka stands with the original rights holder: `brak` (nothing asked),
 **Sekcja**:
 A labelled block of a Piosenka's lyrics: Zwrotka N, Przedrefren, Refren, Bridge (Mostek), Intro, Zakończenie. Written in the source as `[Refren]` on its own line.
 
+**Album**:
+The original release a Piosenka comes from: title, artist, year and a cover image (Sanity document `album`, referenced by the song). One cover serves every song from the same release. Covers are copyrighted too, so ask for them with the translation permission.
+
 **Demo**:
 An MP3 recording of the Polish version, played by the site's own player. Never an external embed.
 
@@ -42,7 +45,7 @@ An MP3 recording of the Polish version, played by the site's own player. Never a
 The lyrics as plain text, slides separated by a blank line, N lines per slide (2 or 4), each Sekcja optionally headed by its label in English (ProPresenter turns Verse/Chorus/Bridge into slide groups), Polish, or none. Copied from the song page or downloaded as `.txt`.
 
 **Darowizna**:
-A gift to the Zbór: a bank transfer (account, title, ZBP transfer QR code) or online through the existing Stripe Payment Link. Titles start with „Darowizna na cele kultu religijnego” so donors can deduct it in PIT.
+A gift to the Zbór, for a named cel (Dziesięcina, Ofiara, Darowizna ogólna, or a one-off zbiórka added in the panel): a bank transfer (account, title, ZBP transfer QR code) or online through the existing Stripe Payment Link. Titles start with „Darowizna na cele kultu religijnego” so donors can deduct it in PIT; the QR code carries a short form („Darowizna - Ofiara”) because ZBP allows 32 characters, and leaves the NIP slot empty because a code starting with digits makes phone cameras offer a phone call.
 _Avoid_: datek, opłata, składka
 
 **Ustawienia strony**:

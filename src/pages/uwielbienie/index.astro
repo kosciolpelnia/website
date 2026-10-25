@@ -2,8 +2,10 @@
 import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
 import { publicSongs } from '../../lib/catalog';
+import { coverUrl, searchText, songCount } from '../../lib/songs';
 
 const songs = await publicSongs();
+const authors = [...new Set(songs.flatMap((s) => s.originalAuthors))].sort((a, b) => a.localeCompare(b, 'pl'));
 ---
 
 <Base
@@ -24,28 +26,71 @@ const songs = await publicSongs();
           Pierwsze tłumaczenia pojawią się tu wkrótce.
         </p>
       ) : (
-        <ul class="divide-y divide-zielen/15 border-y border-zielen/15">
-          {songs.map((song) => (
-            <li>
-              <a
-                href={`/uwielbienie/${song.slug}`}
-                class="group flex flex-col gap-1 py-6 transition sm:flex-row sm:items-center sm:justify-between sm:gap-8"
+        <>
+          <form role="search" class="mb-8 grid gap-3 sm:grid-cols-[1fr_16rem]" data-filters onsubmit="return false">
+            <label class="relative block">
+              <span class="sr-only">Szukaj po tytule, autorze lub albumie</span>
+              <input
+                type="search"
+                name="q"
+                placeholder="Szukaj po tytule, autorze lub albumie"
+                autocomplete="off"
+                class="w-full rounded-full bg-bez-jasny px-6 py-3.5 text-lg ring-2 ring-zielen/20 outline-none placeholder:text-zielen/60 focus:ring-zielen"
+              />
+            </label>
+            <label class="block">
+              <span class="sr-only">Autor oryginału</span>
+              <select
+                name="autor"
+                class="w-full cursor-pointer appearance-none rounded-full bg-bez-jasny bg-[length:1rem] bg-[right_1.25rem_center] bg-no-repeat px-6 py-3.5 text-lg ring-2 ring-zielen/20 outline-none focus:ring-zielen"
+                style="background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23364f32' stroke-width='3'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E&quot;)"
               >
-                <span>
-                  <span class="block text-2xl font-bold group-hover:text-pomarancz">{song.title}</span>
-                  <span class="mt-1 block text-[0.95rem] opacity-80">
-                    {song.originalTitle} · {song.originalAuthors.join(', ')}
+                <option value="">Wszyscy autorzy</option>
+                {authors.map((a) => <option value={a}>{a}</option>)}
+              </select>
+            </label>
+          </form>
+          <p class="mb-4 text-sm font-semibold opacity-75" aria-live="polite" data-count>
+            {songCount(songs.length)}
+          </p>
+          <ul class="divide-y divide-zielen/15 border-y border-zielen/15" data-songs>
+            {songs.map((song) => (
+              <li data-search={searchText(song)} data-authors={JSON.stringify(song.originalAuthors)}>
+                <a href={`/uwielbienie/${song.slug}`} class="group flex items-center gap-5 py-5">
+                  {song.album?.cover ? (
+                    <img
+                      src={coverUrl(song.album.cover, 160)}
+                      alt=""
+                      width="80"
+                      height="80"
+                      loading="lazy"
+                      class="size-16 shrink-0 rounded-2xl object-cover sm:size-20"
+                    />
+                  ) : (
+                    <span aria-hidden="true" class="grid size-16 shrink-0 place-items-center rounded-2xl bg-zielen text-2xl text-bez sm:size-20">
+                      ♪
+                    </span>
+                  )}
+                  <span class="min-w-0 flex-1">
+                    <span class="block text-xl font-bold group-hover:text-pomarancz sm:text-2xl">{song.title}</span>
+                    <span class="mt-1 block text-[0.95rem] opacity-80">
+                      {song.originalTitle} · {song.originalAuthors.join(', ')}
+                      {song.album && <span class="hidden sm:inline"> · {song.album.title}</span>}
+                    </span>
                   </span>
-                </span>
-                <span class="flex shrink-0 flex-wrap gap-2 text-sm font-semibold">
-                  {song.demo && <span class="rounded-full bg-bursztyn px-3 py-1 text-braz">Demo</span>}
-                  <span class="rounded-full bg-zielen px-3 py-1 text-bez">PDF</span>
-                  <span class="rounded-full bg-zielen px-3 py-1 text-bez">ProPresenter</span>
-                </span>
-              </a>
-            </li>
-          ))}
-        </ul>
+                  <span class="hidden shrink-0 flex-wrap justify-end gap-2 text-sm font-semibold md:flex">
+                    {song.demo && <span class="rounded-full bg-bursztyn px-3 py-1 text-braz">Demo</span>}
+                    <span class="rounded-full bg-zielen px-3 py-1 text-bez">PDF</span>
+                    <span class="rounded-full bg-zielen px-3 py-1 text-bez">ProPresenter</span>
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <p class="hidden py-10 text-center text-lg" data-empty>
+            Nic nie pasuje. <button type="button" class="cursor-pointer font-semibold underline decoration-pomarancz underline-offset-4" data-reset>Wyczyść filtry</button>
+          </p>
+        </>
       )
     }
   </section>
@@ -70,3 +115,46 @@ const songs = await publicSongs();
     </div>
   </section>
 </Base>
+
+<script>
+  import { searchText, songCount } from '../../lib/songs';
+
+  const form = document.querySelector<HTMLFormElement>('[data-filters]');
+  if (form) {
+    const items = [...document.querySelectorAll<HTMLLIElement>('[data-songs] > li')];
+    const count = document.querySelector<HTMLElement>('[data-count]')!;
+    const empty = document.querySelector<HTMLElement>('[data-empty]')!;
+    const q = form.elements.namedItem('q') as HTMLInputElement;
+    const author = form.elements.namedItem('autor') as HTMLSelectElement;
+
+    const apply = () => {
+      const words = searchText({ title: q.value, originalTitle: '', originalAuthors: [], translators: [] }).split(/\s+/).filter(Boolean);
+      let shown = 0;
+      for (const li of items) {
+        const text = li.dataset.search ?? '';
+        const authors = JSON.parse(li.dataset.authors ?? '[]') as string[];
+        const match = words.every((w) => text.includes(w)) && (!author.value || authors.includes(author.value));
+        li.hidden = !match;
+        if (match) shown++;
+      }
+      count.textContent = songCount(shown);
+      empty.classList.toggle('hidden', shown > 0);
+      const params = new URLSearchParams();
+      if (q.value) params.set('q', q.value);
+      if (author.value) params.set('autor', author.value);
+      history.replaceState(null, '', params.size ? `?${params}` : location.pathname);
+    };
+
+    // Filters survive a reload and can be shared as a link.
+    const initial = new URLSearchParams(location.search);
+    q.value = initial.get('q') ?? '';
+    author.value = initial.get('autor') ?? '';
+    form.addEventListener('input', apply);
+    document.querySelector('[data-reset]')?.addEventListener('click', () => {
+      form.reset();
+      apply();
+      q.focus();
+    });
+    apply();
+  }
+</script>

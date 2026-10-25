@@ -96,7 +96,7 @@ export const ustawienia = defineType({
               type: 'object',
               fields: [
                 { name: 'name', title: 'Nazwa', type: 'string' },
-                { name: 'title', title: 'Tytuł przelewu', type: 'string', description: 'Zacznij od „Darowizna na cele kultu religijnego”' },
+                { name: 'title', title: 'Tytuł przelewu', type: 'string', description: 'Zacznij od „Darowizna na cele kultu religijnego”. W kodzie QR (max 32 znaki) pojawi się skrót „Darowizna - <nazwa>”.' },
               ],
               preview: { select: { title: 'name', subtitle: 'title' } },
             },

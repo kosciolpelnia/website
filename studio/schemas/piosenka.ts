@@ -46,6 +46,13 @@ export const piosenka = defineType({
       of: [{ type: 'string' }],
       validation: (r) => r.required().min(1),
     }),
+    defineField({
+      name: 'album',
+      title: 'Album',
+      description: 'Płyta, z której pochodzi oryginał. Nowy album dodasz przyciskiem „Create”.',
+      type: 'reference',
+      to: [{ type: 'album' }],
+    }),
     defineField({ name: 'publisher', title: 'Wydawca', type: 'string' }),
     defineField({ name: 'ccli', title: 'Numer CCLI', type: 'string' }),
     defineField({ name: 'originalUrl', title: 'Link do oryginału (YouTube, Spotify…)', type: 'url' }),
@@ -75,8 +82,9 @@ export const piosenka = defineType({
   ],
   orderings: [{ title: 'Tytuł', name: 'title', by: [{ field: 'title', direction: 'asc' }] }],
   preview: {
-    select: { title: 'title', original: 'originalTitle', status: 'status' },
-    prepare: ({ title, original, status }) => ({
+    select: { title: 'title', original: 'originalTitle', status: 'status', media: 'album.cover' },
+    prepare: ({ title, original, status, media }) => ({
+      media,
       title,
       subtitle: `${{ brak: '⛔ brak zgody', 'w-trakcie': '⏳ w trakcie', zgoda: '✅ zgoda' }[status as string] ?? ''} · ${original ?? ''}`,
     }),

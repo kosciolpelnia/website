@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import AudioPlayer from '../../components/AudioPlayer.astro';
 import { publicSongs } from '../../lib/catalog';
 import { creditLine } from '../../lib/pdf';
+import { coverUrl } from '../../lib/songs';
 
 export async function getStaticPaths() {
   return (await publicSongs()).map((song) => ({ params: { slug: song.slug }, props: { song } }));
@@ -20,7 +21,18 @@ const credits = creditLine({ ...song, url: '' });
         Przykładowa piosenka - usuń przed publikacją
       </p>
     )}
-    <h1 class="font-akcent mt-6 text-[clamp(2.75rem,8vw,5rem)] text-balance">{song.title}</h1>
+    <div class="mt-6 flex flex-col gap-6 sm:flex-row sm:items-end">
+      {song.album?.cover && (
+        <img
+          src={coverUrl(song.album.cover, 400)}
+          alt={`Okładka albumu „${song.album.title}”`}
+          width="200"
+          height="200"
+          class="size-36 shrink-0 rounded-(--radius-karta) object-cover shadow-[0_18px_40px_-18px_rgb(45_35_27/0.5)] sm:size-48"
+        />
+      )}
+      <h1 class="font-akcent text-[clamp(2.75rem,8vw,5rem)] text-balance">{song.title}</h1>
+    </div>
     <p class="mt-4 text-lg">
       Oryginał:{' '}
       {song.originalUrl ? (
@@ -30,6 +42,11 @@ const credits = creditLine({ ...song, url: '' });
       )}
       {' '}· {song.originalAuthors.join(', ')}
     </p>
+    {song.album && (
+      <p class="mt-1 opacity-80">
+        Album: {song.album.title}{song.album.artist && <> · {song.album.artist}</>}{song.album.year && <> · {song.album.year}</>}
+      </p>
+    )}
     <p class="mt-1 opacity-80">Tłumaczenie: {song.translators.join(', ')}</p>
 
     <div class="mt-8 flex flex-wrap gap-3">

@@ -34,6 +34,15 @@ const piosenki = defineCollection({
     /** Marks sample content shipped with the scaffold; never meant for real use. */
     sample: z.boolean().nullish().transform((s) => s ?? false),
     publishedAt: z.coerce.date().optional(),
+    /** The original release; cover is a Sanity CDN image URL. */
+    album: z
+      .object({
+        title: z.string(),
+        artist: z.string().nullish(),
+        year: z.number().nullish(),
+        cover: z.string().nullish(),
+      })
+      .nullish(),
   }),
 });
 

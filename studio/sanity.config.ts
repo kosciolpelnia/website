@@ -1,6 +1,7 @@
 import { defineConfig } from 'sanity';
 import { structureTool } from 'sanity/structure';
 import { visionTool } from '@sanity/vision';
+import { album } from './schemas/album';
 import { piosenka } from './schemas/piosenka';
 import { ustawienia } from './schemas/ustawienia';
 
@@ -23,12 +24,13 @@ export default defineConfig({
               .child(S.document().schemaType('ustawienia').documentId(singletonId).title('Ustawienia strony')),
             S.divider(),
             S.documentTypeListItem('piosenka').title('Piosenki'),
+            S.documentTypeListItem('album').title('Albumy'),
           ]),
     }),
     visionTool(),
   ],
   schema: {
-    types: [piosenka, ustawienia],
+    types: [piosenka, album, ustawienia],
     // Ustawienia is a singleton: no "new" or "duplicate" for it.
     templates: (templates) => templates.filter((t) => t.schemaType !== 'ustawienia'),
   },
