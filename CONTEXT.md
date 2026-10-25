@@ -16,8 +16,11 @@ The Sunday service, 11:30 at ul. Stefana Batorego 7. Preceded by kawa at 11:15 a
 _Avoid_: msza, spotkanie (as the name of the service)
 
 **Kościół dziecięcy**:
-The children's programme running during the Nabożeństwo.
+Everything for children on Sunday, one entry per age group in Ustawienia strony: the **Kącik zabaw** (under 3, in the hall for the whole Nabożeństwo, next to the parents) and the **Zajęcia dla dzieci** (from 3, during the sermon, with opiekunowie). Families with children are the Zbór's main audience, so this block stands high on both the home and the Sunday page.
 _Avoid_: szkółka niedzielna
+
+**Siedziba**:
+The Zbór's registered address (ul. Stefana Batorego 7, 32-020 Wieliczka), the same building as the Nabożeństwo. Used in the privacy policy; NIP 6832152982.
 
 **Pastorzy**:
 Daniel i Nastia, who lead the Zbór. Shown by first names only.

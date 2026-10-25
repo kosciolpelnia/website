@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import Kids from '../components/Kids.astro';
 import { getSite } from '../lib/settings';
 
 const site = await getSite();
@@ -76,7 +77,7 @@ const tiles = [
             Tu jesteś <span class="text-bez">w pełni</span> mile widziany
           </p>
           <p class="text-xl leading-relaxed font-medium text-pretty md:text-2xl">
-            Wspólnie uwielbiamy Boga, słuchamy Słowa Bożego, a dzieci mają w tym czasie swój kościół dziecięcy.
+            Wspólnie uwielbiamy Boga i słuchamy Słowa Bożego, a dzieci mają swój kącik zabaw i zajęcia.
             Przyjdź kwadrans wcześniej na kawę.
           </p>
           <p class="font-semibold">
@@ -100,7 +101,9 @@ const tiles = [
     </div>
   </section>
 
-  <section class="kontener py-20 md:py-28" aria-label="Poznaj nas bliżej">
+  <Kids kids={site.sunday.kids} more />
+
+  <section class="kontener pb-20 md:pb-28" aria-label="Poznaj nas bliżej">
     <ul class="grid gap-4 sm:grid-cols-2">
       {
         tiles.map((t) => (

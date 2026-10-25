@@ -4,8 +4,9 @@ import { queries, sanityClient } from './sanity';
 
 /** What the "ustawienia" query returns; every field may be missing or empty. */
 export interface SettingsDoc {
-  sunday?: Partial<Record<'start' | 'venueName' | 'street' | 'postalCode' | 'city' | 'parking' | 'kidsAges', string | null>> & {
+  sunday?: Partial<Record<'start' | 'venueName' | 'street' | 'postalCode' | 'city' | 'parking', string | null>> & {
     timeline?: { time?: string; title?: string; text?: string }[] | null;
+    kids?: { ages?: string; title?: string; text?: string }[] | null;
   } | null;
   giving?: Partial<Record<'nip' | 'recipient' | 'account' | 'stripeUrl', string | null>> & {
     purposes?: { name?: string; title?: string }[] | null;
@@ -29,6 +30,7 @@ export function mergeSettings(doc: SettingsDoc | null, base: Site = defaults): S
   const g = doc?.giving ?? {};
   const c = doc?.contact ?? {};
   const timeline = complete<Site['sunday']['timeline'][number]>(s.timeline, ['time', 'title', 'text']);
+  const kids = complete<Site['sunday']['kids'][number]>(s.kids, ['ages', 'title', 'text']);
   const purposes = complete<Site['giving']['purposes'][number]>(g.purposes, ['name', 'title']);
   const pastors = complete<{ names: string; role: string; bio: string }>(doc?.pastors, ['names', 'bio']).map((p) => ({
     names: p.names,
@@ -53,7 +55,7 @@ export function mergeSettings(doc: SettingsDoc | null, base: Site = defaults): S
       city,
       mapsUrl: mapsUrl(street, postalCode, city),
       timeline: timeline.length ? timeline : base.sunday.timeline,
-      kidsAges: pick(s.kidsAges, base.sunday.kidsAges),
+      kids: kids.length ? kids : base.sunday.kids,
       parking: pick(s.parking, base.sunday.parking),
     },
     pastors: pastors.length ? pastors : base.pastors,

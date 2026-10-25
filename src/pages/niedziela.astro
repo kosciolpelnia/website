@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Brak from '../components/Brak.astro';
+import Kids from '../components/Kids.astro';
 import { getSite } from '../lib/settings';
 
 const site = await getSite();
@@ -23,7 +24,7 @@ const faq = [
   },
   {
     q: 'Co z dziećmi?',
-    a: 'W czasie nabożeństwa dzieci mają swój kościół dziecięcy z opiekunami. Przyjdź kilka minut wcześniej, a pokażemy Ci, gdzie to jest.',
+    a: 'Każde dziecko jest mile widziane. Maluchy do 3 lat mają kącik zabaw na sali, a dzieci od 3 lat na czas kazania idą na swoje zajęcia z opiekunami.',
   },
   {
     q: 'Czy trzeba coś wrzucać na tacę?',
@@ -77,6 +78,8 @@ const faq = [
     </div>
   </section>
 
+  <Kids kids={s.kids} />
+
   <section class="kontener py-16" aria-labelledby="przebieg">
     <h2 id="przebieg" class="font-naglowek mb-10 text-3xl md:text-4xl">Jak wygląda niedziela</h2>
     <ol class="relative grid gap-4 md:grid-cols-3">
@@ -111,11 +114,6 @@ const faq = [
         Raz w miesiącu przyjmujemy razem <strong>Wieczerzę Pańską</strong>.
       </p>
 
-      <h2 id="dzieci">Kościół dziecięcy</h2>
-      <p>
-        W czasie nabożeństwa dzieci mają swój program z opiekunami: zabawę, historie biblijne i modlitwę dostosowane do
-        wieku. Wiek: {s.kidsAges ?? <Brak co="dla dzieci w jakim wieku" />}.
-      </p>
     </div>
   </section>
 

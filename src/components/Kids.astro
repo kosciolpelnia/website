@@ -1,0 +1,45 @@
+---
+// Kościół dziecięcy: families with children are the Zbór's main audience, so this block sits
+// high on both the home and the Sunday page.
+import type { Site } from '../data/site';
+
+interface Props {
+  kids: Site['sunday']['kids'];
+  /** Link to the Sunday page; off on the Sunday page itself. */
+  more?: boolean;
+  id?: string;
+}
+const { kids, more = false, id = 'dzieci' } = Astro.props;
+const tones = ['bg-zielen text-bez', 'bg-bursztyn text-braz', 'bg-pomarancz text-braz'];
+---
+
+<section class="kontener grid scroll-mt-24 gap-10 py-16 md:py-24 lg:grid-cols-[1fr_1.35fr] lg:items-center lg:gap-16" aria-labelledby={id} id={`${id}-sekcja`}>
+  <div class="@container">
+    <p class="mb-4 font-semibold tracking-wide text-pomarancz uppercase">Dla rodzin z dziećmi</p>
+    <h2 id={id} class="font-naglowek text-[min(2.5rem,calc(100cqw/11))] text-balance">
+      Każde dziecko jest tu mile widziane
+    </h2>
+    <p class="mt-5 max-w-xl text-lg leading-relaxed text-pretty">
+      Przyjdź z dziećmi bez stresu. Płacz, bieganie i hałas to u nas normalna część niedzieli. Bądź kilka minut
+      wcześniej, a pokażemy Ci, gdzie co jest.
+    </p>
+    {
+      more && (
+        <a href="/niedziela#dzieci-sekcja" class="mt-7 inline-block rounded-full bg-zielen px-6 py-3.5 font-semibold text-bez transition hover:bg-braz">
+          Jak wygląda niedziela z dziećmi
+        </a>
+      )
+    }
+  </div>
+  <ul class="grid gap-4 sm:grid-cols-2">
+    {
+      kids.map((group, i) => (
+        <li class:list={['@container flex flex-col rounded-(--radius-karta) p-7 md:p-8', tones[i % tones.length]]}>
+          <p class="font-akcent text-[min(3.25rem,calc(100cqw/4.5))]">{group.ages}</p>
+          <h3 class="mt-4 text-xl font-bold">{group.title}</h3>
+          <p class="mt-2 leading-relaxed text-pretty">{group.text}</p>
+        </li>
+      ))
+    }
+  </ul>
+</section>

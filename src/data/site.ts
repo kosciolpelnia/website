@@ -5,6 +5,8 @@
 export interface Site {
   name: string;
   legalName: string;
+  /** Registered address (siedziba) of the Zbór, used in the privacy policy. */
+  seat: string;
   nip: string | null;
   url: string;
   email: string;
@@ -21,7 +23,8 @@ export interface Site {
     /** Derived from the address in mergeSettings(). */
     mapsUrl: string;
     timeline: { time: string; title: string; text: string }[];
-    kidsAges: string | null;
+    /** Kościół dziecięcy: one entry per age group, shown on the home and Sunday pages. */
+    kids: { ages: string; title: string; text: string }[];
     parking: string | null;
   };
   pastors: { names: string; role: string; bio: string; photo: string | null }[];
@@ -37,7 +40,8 @@ export interface Site {
 export const defaults: Site = {
   name: 'Kościół Pełnia',
   legalName: 'Kościół Zielonoświątkowy Zbór „Pełnia” w Wieliczce',
-  nip: null,
+  seat: 'ul. Stefana Batorego 7, 32-020 Wieliczka',
+  nip: '6832152982',
   url: 'https://kosciolpelnia.pl',
   email: 'info@kosciolpelnia.pl',
   instagram: 'https://www.instagram.com/kosciolpelnia',
@@ -56,10 +60,21 @@ export const defaults: Site = {
     mapsUrl: '',
     timeline: [
       { time: '11:15', title: 'Kawa i powitanie', text: 'Przyjdź chwilę wcześniej. Przy kawie lub herbacie chętnie Cię przywitamy i poznamy.' },
-      { time: '11:30', title: 'Nabożeństwo', text: 'Wspólnie uwielbiamy Boga, modlimy się i słuchamy Słowa Bożego. Dzieci w tym czasie mają swój kościół dziecięcy.' },
+      { time: '11:30', title: 'Nabożeństwo', text: 'Wspólnie uwielbiamy Boga, modlimy się i słuchamy Słowa Bożego. Na czas kazania dzieci od 3 lat idą na swoje zajęcia.' },
       { time: '12:30', title: 'Czas razem', text: 'Po nabożeństwie zostajemy na kawie i rozmowach. Nigdzie się nie spieszymy.' },
     ],
-    kidsAges: null,
+    kids: [
+      {
+        ages: 'do 3 lat',
+        title: 'Kącik zabaw',
+        text: 'Na sali, przez całe nabożeństwo: zabawki i miejsce dla maluchów tuż obok rodziców.',
+      },
+      {
+        ages: 'od 3 lat',
+        title: 'Zajęcia dla dzieci',
+        text: 'W trakcie kazania dzieci mają swój program z opiekunami: historie biblijne, zabawę i modlitwę.',
+      },
+    ],
     parking: null,
   },
 

@@ -25,7 +25,23 @@ export const ustawienia = defineType({
         defineField({ name: 'postalCode', title: 'Kod pocztowy', type: 'string' }),
         defineField({ name: 'city', title: 'Miasto', type: 'string' }),
         defineField({ name: 'parking', title: 'Dojazd i parking', type: 'text', rows: 3 }),
-        defineField({ name: 'kidsAges', title: 'Kościół dziecięcy: wiek dzieci', type: 'string', description: 'np. 3-10 lat' }),
+        defineField({
+          name: 'kids',
+          title: 'Kościół dziecięcy',
+          description: 'Jedna pozycja na grupę wiekową. Widać je na stronie głównej i na stronie o niedzieli.',
+          type: 'array',
+          of: [
+            {
+              type: 'object',
+              fields: [
+                { name: 'ages', title: 'Wiek', type: 'string', description: 'np. do 3 lat' },
+                { name: 'title', title: 'Nazwa', type: 'string', description: 'np. Kącik zabaw' },
+                { name: 'text', title: 'Opis', type: 'text', rows: 3 },
+              ],
+              preview: { select: { title: 'title', subtitle: 'ages' } },
+            },
+          ],
+        }),
         defineField({
           name: 'timeline',
           title: 'Przebieg niedzieli',

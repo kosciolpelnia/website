@@ -9,7 +9,8 @@ describe('mergeSettings', () => {
     expect(site.sunday.mapsUrl).toBe(
       'https://www.google.com/maps/search/?api=1&query=Stefana%20Batorego%207%2C%2032-020%20Wieliczka',
     );
-    expect(site.nip).toBeNull();
+    expect(site.nip).toBe(defaults.nip);
+    expect(site.sunday.kids).toEqual(defaults.sunday.kids);
   });
 
   it('lets filled panel fields win and ignores blank ones', () => {
@@ -27,8 +28,12 @@ describe('mergeSettings', () => {
   it('drops half-filled list rows instead of showing gaps', () => {
     const site = mergeSettings({
       pastors: [{ names: 'Daniel i Nastia', bio: 'Opis', photo: 'https://cdn.sanity.io/x.jpg' }, { names: 'Bez opisu' }],
-      sunday: { timeline: [{ time: '11:00', title: 'Start' }] },
+      sunday: {
+        timeline: [{ time: '11:00', title: 'Start' }],
+        kids: [{ ages: 'od 3 lat', title: 'Zajęcia', text: 'Opis' }, { ages: 'do 3 lat' }],
+      },
     });
+    expect(site.sunday.kids).toEqual([{ ages: 'od 3 lat', title: 'Zajęcia', text: 'Opis' }]);
     expect(site.pastors).toEqual([
       { names: 'Daniel i Nastia', role: 'Pastorzy zboru', bio: 'Opis', photo: 'https://cdn.sanity.io/x.jpg' },
     ]);
