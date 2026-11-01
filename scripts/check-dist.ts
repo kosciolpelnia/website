@@ -14,8 +14,9 @@ const [gated, samples] = await Promise.all([
 const built = (await readdir(dist, { withFileTypes: true, recursive: true }))
   .filter((e) => e.isFile())
   .map((e) => join(e.parentPath, e.name));
+// Pages bind one-letter words with non-breaking spaces (src/lib/typography.ts); titles use plain ones.
 const texts = await Promise.all(
-  built.filter((f) => /\.(html|txt|xml)$/.test(f)).map(async (f) => [f, await readFile(f, 'utf8')] as const),
+  built.filter((f) => /\.(html|txt|xml)$/.test(f)).map(async (f) => [f, (await readFile(f, 'utf8')).replaceAll('\u00A0', ' ')] as const),
 );
 
 const problems: string[] = [];

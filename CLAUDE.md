@@ -20,6 +20,7 @@ Node comes from fnm (`eval "$(fnm env)"` in a fresh shell; Node 24).
 - Colours: only the brand tokens in `src/styles/global.css` (`zielen`, `bez`, `pomarancz`, `bursztyn`, `braz`, `bez-jasny`); Tailwind's default palette is switched off on purpose.
 - Logo: only `<Logo />` (full lockup, `currentColor`). The logobook forbids the P alone, rearranged parts, effects and off-palette colours.
 - Piosenki are read only through `publicSongs()` in `src/lib/catalog.ts`.
+- One-letter words (a, i, o, u, w, z) never end a line: `src/middleware.ts` binds them with a non-breaking space on every page, Sanity text included. No need to write `&nbsp;` by hand.
 - Missing facts are `null` in `src/data/site.ts` and render through `<Brak co="…" />`; unapproved copy sits inside `<Szkic>`. Search for `Brak` / `Szkic` to see what is still open.
 - No third-party embeds or cookies (maps are links, demos are self-hosted MP3s), so the site needs no cookie banner.
 - Brand sources: `Pełnia/` (logo files) and `logobook.pdf` (179 MB, not in git, nor `Pełnia/do druku/`).
