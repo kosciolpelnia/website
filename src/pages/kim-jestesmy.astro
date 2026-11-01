@@ -99,15 +99,27 @@ const values = [
   </section>
 
   <section class="kontener py-16" aria-labelledby="kz">
-    <div class="rounded-(--radius-duzy) bg-bez-jasny p-8 ring-1 ring-zielen/15 md:p-12">
-      <h2 id="kz" class="font-naglowek text-2xl md:text-3xl">Część większej rodziny</h2>
-      <p class="mt-5 max-w-2xl text-lg leading-relaxed text-pretty">
-        {site.legalName} jest częścią Kościoła Zielonoświątkowego w RP, jednego z największych kościołów
-        protestanckich w Polsce. Dzielimy z nim wyznanie wiary i strukturę, a w Wieliczce budujemy lokalną wspólnotę.
-      </p>
-      <a href="/w-co-wierzymy" class="mt-6 inline-block font-semibold underline decoration-pomarancz underline-offset-4">
-        Zobacz, w co wierzymy →
-      </a>
+    <div class="grid gap-10 rounded-(--radius-duzy) bg-bez-jasny p-8 ring-1 ring-zielen/15 md:p-12 lg:grid-cols-[1.4fr_1fr] lg:items-center lg:gap-16">
+      <div>
+        <h2 id="kz" class="font-naglowek text-2xl md:text-3xl">Część większej rodziny</h2>
+        <p class="mt-5 max-w-2xl text-lg leading-relaxed text-pretty">
+          {site.legalName} jest częścią Kościoła Zielonoświątkowego w RP, jednego z największych kościołów
+          protestanckich w Polsce. Dzielimy z nim wyznanie wiary i strukturę, a w Wieliczce budujemy lokalną wspólnotę.
+        </p>
+        <a href="/w-co-wierzymy" class="mt-6 inline-block font-semibold underline decoration-pomarancz underline-offset-4">
+          Zobacz, w co wierzymy →
+        </a>
+      </div>
+      <dl class="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+        <div class="flex flex-col rounded-(--radius-karta) bg-bursztyn p-6 text-braz">
+          <dt class="font-semibold">zborów Kościoła Zielonoświątkowego w Polsce</dt>
+          <dd class="font-akcent order-first text-5xl">200+</dd>
+        </div>
+        <div class="flex flex-col rounded-(--radius-karta) bg-zielen p-6 text-bez">
+          <dt class="font-semibold">wiernych w całym kraju</dt>
+          <dd class="font-akcent order-first text-5xl">~24 tys.</dd>
+        </div>
+      </dl>
     </div>
   </section>
 </Base>
